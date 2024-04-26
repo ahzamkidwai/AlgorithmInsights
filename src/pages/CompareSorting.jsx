@@ -175,9 +175,7 @@ function CompareSorting() {
       console.log("After Bubble Sort Algorithm Array2 : ", array2);
   }
 
-  async function handleSelectionSort(newArray, order) {
-    
-  }
+  async function handleSelectionSort(newArray, order) {}
 
   async function handleQuickSort(newArray, order) {
     setSorting(true);
@@ -457,7 +455,7 @@ function CompareSorting() {
       <div className="bg-[#153448] min-h-96 flex flex-row items-center justify-evenly sm:min-h-60">
         <div className="flex flex-col justify-around gap-8 lg:flex lg:flex-row ">
           <div className="flex items-end min-h-48 border  border-[#3C5B6F] bg-[#3C5B6F]">
-            {commonArray.map((value, index) => (
+            {array1.map((value, index) => (
               <div key={index} className="flex flex-col ">
                 <div
                   className={`h-auto ${
