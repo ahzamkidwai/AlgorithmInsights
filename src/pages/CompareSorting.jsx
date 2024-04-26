@@ -31,8 +31,6 @@ function CompareSorting() {
     secondSortingOption: "",
   });
 
-  // console.log("Sorting options are : ", sortingOptions);
-
   const sortingSpeed = 500;
 
   const sortingAlgorithmsOptions = [
@@ -41,11 +39,6 @@ function CompareSorting() {
     { name: "Merge Sort" },
     { name: "Quick Sort" },
   ];
-
-  /* console.log("Sorting options selected using dropdown : ", sortingOptions);
-  console.log("Common Array is : ", commonArray);
-  console.log("Array1 is : ", array1);
-  console.log("Array2 is : ", array2); */
 
   function changeSelectedAlgorithmHandler(value, option) {
     setSortingOptions((prevState) => ({
@@ -59,7 +52,7 @@ function CompareSorting() {
     const secondOption = sortingOptions.secondSortingOption;
     console.log("First Sorting Option is : ", firstOption);
     console.log("Second Sorting Option is : ", secondOption);
-    // Function to sort array1 based on the selected sorting algorithm
+
     const sortArray1 = async () => {
       if (firstOption === "Bubble Sort") {
         console.log(`(firstOption === "Bubble Sort")`);
@@ -75,7 +68,7 @@ function CompareSorting() {
         await handleQuickSort(array1, 1);
       }
     };
-    // Function to sort array2 based on the selected sorting algorithm
+
     const sortArray2 = async () => {
       if (secondOption === "Bubble Sort") {
         console.log(`(secondOption === "Bubble Sort")`);
@@ -91,18 +84,16 @@ function CompareSorting() {
         await handleQuickSort(array2, 2);
       }
     };
-    // Call the sorting functions asynchronously to ensure simultaneous sorting
+
     Promise.all([sortArray1(), sortArray2()]);
   }
-
-  // const options = ["Selection Sort", "Bubble Sort", "Quick Sort", "Merge Sort"];
 
   function generateRandomArray() {
     return Array.from({ length: 10 }, () => {
       let value;
       do {
         value = Math.floor(Math.random() * 100);
-      } while (value <= 0); // Keep generating until value is greater than 0
+      } while (value <= 0);
       return value;
     });
   }
@@ -137,10 +128,9 @@ function CompareSorting() {
   async function handleBubbleSort(newArray, order) {
     console.log("bubble sort function is called by array " + order);
     setSorting(true);
-    // let newArray = [...randomArray]; // Create a copy of the array
+
     let len = newArray.length;
 
-    // Bubble sort algorithm
     for (let i = 0; i < len; i++) {
       for (let j = 0; j < len - 1 - i; j++) {
         if (order === 1) {
@@ -157,7 +147,7 @@ function CompareSorting() {
           if (order === 1) {
             setArray1([...newArray]); // Update the array1 after swapping
           } else if (order === 2) {
-            setArray2([...newArray]); // Update the array1 after swapping
+            setArray2([...newArray]); // Update the array2 after swapping
           }
         }
       }
@@ -165,12 +155,12 @@ function CompareSorting() {
         setSortedIndices1((prevSortedIndices) => [
           ...prevSortedIndices,
           len - 1 - i,
-        ]); 
+        ]);
       } else if (order === 2) {
         setSortedIndices2((prevSortedIndices) => [
           ...prevSortedIndices,
           len - 1 - i,
-        ]); 
+        ]);
       }
     }
     if (order === 1) {
@@ -185,7 +175,9 @@ function CompareSorting() {
       console.log("After Bubble Sort Algorithm Array2 : ", array2);
   }
 
-  async function handleSelectionSort(newArray, order) {}
+  async function handleSelectionSort(newArray, order) {
+    
+  }
 
   async function handleQuickSort(newArray, order) {
     setSorting(true);
@@ -465,7 +457,7 @@ function CompareSorting() {
       <div className="bg-[#153448] min-h-96 flex flex-row items-center justify-evenly sm:min-h-60">
         <div className="flex flex-col justify-around gap-8 lg:flex lg:flex-row ">
           <div className="flex items-end min-h-48 border  border-[#3C5B6F] bg-[#3C5B6F]">
-            {array1.map((value, index) => (
+            {commonArray.map((value, index) => (
               <div key={index} className="flex flex-col ">
                 <div
                   className={`h-auto ${
