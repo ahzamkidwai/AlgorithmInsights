@@ -1,0 +1,58 @@
+async function handleSelectionSort(newArray, order) {
+    console.log("selection sort function is called by array " + order);
+    setSorting(true);
+  
+    let len = newArray.length;
+  
+    for (let i = 0; i < len - 1; i++) {
+      let minIndex = i;
+      for (let j = i + 1; j < len; j++) {
+        if (order === 1) {
+          setActiveIndex1(j); // Highlight current element being compared
+        } else if (order === 2) {
+          setActiveIndex2(j);
+        }
+        await new Promise((resolve) => setTimeout(resolve, sortingSpeed)); // Delay to visualize sorting
+        if (newArray[j] < newArray[minIndex]) {
+          minIndex = j;
+        }
+      }
+  
+      // Swap elements
+      let temp = newArray[i];
+      newArray[i] = newArray[minIndex];
+      newArray[minIndex] = temp;
+      
+      if (order === 1) {
+        setArray1([...newArray]); // Update the array1 after swapping
+      } else if (order === 2) {
+        setArray2([...newArray]); // Update the array2 after swapping
+      }
+  
+      if (order === 1) {
+        setSortedIndices1((prevSortedIndices) => [
+          ...prevSortedIndices,
+          i,
+        ]);
+      } else if (order === 2) {
+        setSortedIndices2((prevSortedIndices) => [
+          ...prevSortedIndices,
+          i,
+        ]);
+      }
+    }
+  
+    if (order === 1) {
+      setActiveIndex1(-1); // Reset active index
+    } else if (order === 2) {
+      setActiveIndex2(-1);
+    }
+    
+    setSorting(false);
+    
+    if (order === 1)
+      console.log("After Selection Sort Algorithm Array1 : ", array1);
+    else if (order === 2)
+      console.log("After Selection Sort Algorithm Array2 : ", array2);
+  }
+  
