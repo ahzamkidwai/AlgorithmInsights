@@ -13,12 +13,10 @@ function GenerateRandomArray() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sortingOptionSelected, setSortingOptionSelected] = useState("");
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("");
-  // console.log("Sorting Algorithm is : ", selectedAlgorithm);
-  // console.log("Sorting Algorithm selected is : ", selectedAlgorithm.name);
 
   const sortingSpeed = 200;
 
-  const cities = [
+  const sortingAlgorithms = [
     { name: "Bubble Sort" },
     { name: "Selection Sort" },
     { name: "Merge Sort" },
@@ -26,34 +24,24 @@ function GenerateRandomArray() {
   ];
 
   function submitSortingMethodHandler() {
-    console.log("data type is : ", typeof sortingOptionSelected);
-    console.log(
-      "sortingOptionSelected is (inside submitSortingMethodHandler) : ",
-      sortingOptionSelected
-    );
+
+
     setSortingOptionSelected(selectedAlgorithm.name);
-    console.log(
-      "selectedAlgorithm is (inside submitSortingMethodHandler) : ",
-      selectedAlgorithm
-    );
+
 
     if (sortingOptionSelected === "Bubble Sort") {
-      console.log("submitSortingMethodHandler ke andar BubbleSort call hua");
       handleBubbleSort();
     } else if (sortingOptionSelected === "Selection Sort") {
-      console.log("submitSortingMethodHandler ke andar SelectionSort call hua");
       handleSelectionSort();
     } else if (sortingOptionSelected === "Quick Sort") {
-      console.log("submitSortingMethodHandler ke andar QuickSort call hua");
       handleQuickSort();
     } else if (sortingOptionSelected === "Merge Sort") {
-      console.log("submitSortingMethodHandler ke andar MergeSort call hua");
       handleMergeSort();
     }
   }
 
   function generateRandomArray() {
-    return Array.from({ length: 10 }, () => {
+    return Array.from({ length: 20 }, () => {
       let value;
       do {
         value = Math.floor(Math.random() * 100);
@@ -130,12 +118,11 @@ function GenerateRandomArray() {
     for (let index = 0; index < newArray.length; index++) {
       newIndices.push(index);
     }
-    // console.log("NewIndices are : ", newIndices);
+
     setSortedIndices((prevSortedIndices) => {
       return [...prevSortedIndices, ...newIndices];
     });
     setSorting(false);
-    // setSwappedIndices([]);
   }
 
   async function mergeSort(arr, l, r) {
@@ -208,7 +195,6 @@ function GenerateRandomArray() {
     for (let index = l; index <= r; index++) {
       newIndex.push(index);
     }
-    // console.log("NewIndexes are : ", newIndex);
 
     setSortedIndices((prevSortedIndices) => {
       return [...prevSortedIndices, ...newIndex];
@@ -310,50 +296,20 @@ function GenerateRandomArray() {
           >
             Generate
           </button>
-          <button
-            // disabled={sorting}
-            //  onClick={handleBubbleSort}
-            className="disabled:opacity-80 disabled:hover:bg-red-500 mx-2 py-1 px-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-          >
+          <button className="disabled:opacity-80 disabled:hover:bg-red-500 mx-2 py-1 px-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
             Bubble Sort
           </button>
-          <button
-            // disabled={sorting}
-            // onClick={handleSelectionSort}
-            className="disabled:opacity-80 disabled:hover:bg-red-500 mx-2 py-1 px-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-          >
+          <button className="disabled:opacity-80 disabled:hover:bg-red-500 mx-2 py-1 px-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
             Selection Sort
           </button>
-          <button
-            // disabled={sorting}
-            // onClick={handleMergeSort}
-            className="disabled:opacity-80 disabled:hover:bg-red-500 mx-2 py-1 px-4 bg-red-500   text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-          >
+          <button className="disabled:opacity-80 disabled:hover:bg-red-500 mx-2 py-1 px-4 bg-red-500   text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
             Merge Sort
           </button>
-          <button
-            // disabled={sorting}
-            // onClick={handleQuickSort}
-            className="disabled:opacity-80 disabled:hover:bg-red-500 mx-2 py-1 px-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-          >
+          <button className="disabled:opacity-80 disabled:hover:bg-red-500 mx-2 py-1 px-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
             Quick Sort
           </button>
         </div>
         <div>
-          {/* <Dropdown
-            value={selectedAlgorithm}
-            onChange={(e) => {
-              setSelectedAlgorithm(e.target.value);
-              setSortingOptionSelected(e.target.value);
-              console.log("Event.target : ", e.target.value);
-            }}
-            options={cities}
-            optionLabel="name"
-            placeholder="Select a sorting algorithm"
-            className="w-full md:w-14rem"
-          />
-        </div>
-        <Button label="Submit" onClick={submitSortingMethodHandler} /> */}
           <Dropdown
             value={selectedAlgorithm}
             onChange={(e) => {
@@ -361,7 +317,7 @@ function GenerateRandomArray() {
               setSortingOptionSelected(e.target.value);
               console.log("Event.target : ", e.target.value);
             }}
-            options={cities}
+            options={sortingAlgorithms}
             optionLabel="name"
             placeholder="Select a sorting algorithm"
             className="w-full md:w-64 border rounded p-2 focus:outline-none focus:border-blue-500"

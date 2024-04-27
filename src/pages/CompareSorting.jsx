@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import "react-dropdown/style.css";
 import { Button } from "@material-tailwind/react";
-
 import { Dropdown } from "primereact/dropdown";
+
 
 function CompareSorting() {
   const [commonArray, setCommonArray] = useState(generateRandomArray());
-  const [array1, setArray1] = useState(commonArray);
-  const [array2, setArray2] = useState(commonArray);
+  const [array1, setArray1] = useState([...commonArray]);
+  const [array2, setArray2] = useState([...commonArray]);
 
   const [pivotIndex1, setPivotIndex1] = useState(-1);
   const [activeIndex1, setActiveIndex1] = useState(-1);
@@ -31,7 +31,7 @@ function CompareSorting() {
     secondSortingOption: "",
   });
 
-  const sortingSpeed = 500;
+  const sortingSpeed = 200;
 
   const sortingAlgorithmsOptions = [
     { name: "Selection Sort" },
@@ -50,37 +50,29 @@ function CompareSorting() {
   function sortArraysHandler() {
     const firstOption = sortingOptions.firstSortingOption;
     const secondOption = sortingOptions.secondSortingOption;
-    console.log("First Sorting Option is : ", firstOption);
-    console.log("Second Sorting Option is : ", secondOption);
+    // console.log("First Sorting Option is : ", firstOption);
+    // console.log("Second Sorting Option is : ", secondOption);
 
     const sortArray1 = async () => {
       if (firstOption === "Bubble Sort") {
-        console.log(`(firstOption === "Bubble Sort")`);
         await handleBubbleSort(array1, 1);
       } else if (firstOption === "Selection Sort") {
-        console.log(`(firstOption === "Selection Sort")`);
         await handleSelectionSort(array1, 1);
       } else if (firstOption === "Merge Sort") {
-        console.log(`(firstOption === "Merge Sort")`);
         await handleMergeSort(array1, 1);
       } else if (firstOption === "Quick Sort") {
-        console.log(`(firstOption === "Quick Sort")`);
         await handleQuickSort(array1, 1);
       }
     };
 
     const sortArray2 = async () => {
       if (secondOption === "Bubble Sort") {
-        console.log(`(secondOption === "Bubble Sort")`);
         await handleBubbleSort(array2, 2);
       } else if (secondOption === "Selection Sort") {
-        console.log(`(secondOption === "Selection Sort")`);
         await handleSelectionSort(array2, 2);
       } else if (secondOption === "Merge Sort") {
-        console.log(`(secondOption === "Merge Sort")`);
         await handleMergeSort(array2, 2);
       } else if (secondOption === "Quick Sort") {
-        console.log(`(secondOption === "Quick Sort")`);
         await handleQuickSort(array2, 2);
       }
     };
@@ -126,7 +118,8 @@ function CompareSorting() {
   }
 
   async function handleBubbleSort(newArray, order) {
-    console.log("bubble sort function is called by array " + order);
+    const startTime = performance.now();
+
     setSorting(true);
 
     let len = newArray.length;
@@ -169,17 +162,70 @@ function CompareSorting() {
       setActiveIndex2(-1);
     }
     setSorting(false);
-    if (order === 1)
-      console.log("After Bubble Sort Algorithm Array1 : ", array1);
-    else if (order === 2)
-      console.log("After Bubble Sort Algorithm Array2 : ", array2);
+    const endTime = performance.now();
+    const timeTaken = endTime - startTime;
+    console.log("Time taken is (using Bubble Sort) : ", timeTaken);
   }
 
-  async function handleSelectionSort(newArray, order) {}
+  async function handleSelectionSort(newArray, order) {
+    const startTime = performance.now();
+
+    setSorting(true);
+    let len = newArray.length;
+
+    for (let i = 0; i < len - 1; i++) {
+      let minimumIndex = i;
+
+      if (order === 1) {
+        setActiveIndex1(i);
+      } else if (order === 2) {
+        setActiveIndex2(i);
+      }
+
+      for (let j = i + 1; j < len; j++) {
+        if (order === 1) {
+          setActiveIndex1(j);
+        } else if (order === 2) {
+          setActiveIndex2(j);
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, sortingSpeed));
+
+        if (newArray[j] < newArray[minimumIndex]) {
+          minimumIndex = j;
+          if (order === 1) {
+            setMinIndex1(minimumIndex);
+          } else if (order === 2) {
+            setMinIndex2(minimumIndex);
+          }
+        }
+      }
+      let temp = newArray[i];
+      newArray[i] = newArray[minimumIndex];
+      newArray[minimumIndex] = temp;
+
+      if (order === 1) {
+        setArray1([...newArray]);
+        setSortedIndices1((prevSortedIndices) => [...prevSortedIndices, i]); // Mark the element as sorted
+      } else if (order === 2) {
+        setArray2([...newArray]);
+        setSortedIndices2((prevSortedIndices) => [...prevSortedIndices, i]); // Mark the element as sorted
+      }
+    }
+    if (order === 1) {
+      setSortedIndices1((prevSortedIndices) => [...prevSortedIndices, len - 1]); // Mark the last element as sorted
+    } else if (order === 2) {
+      setSortedIndices2((prevSortedIndices) => [...prevSortedIndices, len - 1]); // Mark the last element as sorted
+    }
+    setSorting(false);
+    const endTime = performance.now();
+    const timeTaken = endTime - startTime;
+    console.log("Time taken is (using Bubble Sort) : ", timeTaken);
+  }
 
   async function handleQuickSort(newArray, order) {
+    const startTime = performance.now();
     setSorting(true);
-    // let newArray = [...commonArray];
     await quickSort(newArray, 0, newArray.length - 1, order);
     setSorting(false);
     if (order === 1) {
@@ -194,16 +240,14 @@ function CompareSorting() {
     for (let index = 0; index < newArray.length; index++) {
       newIndices.push(index);
     }
-    // console.log("NewIndices are : ", newIndices);
     if (order === 1) {
-      setSortedIndices1((prevSortedIndices) => {
-        return [...prevSortedIndices, ...newIndices];
-      });
+      setSortedIndices1([...newIndices]);
     } else if (order === 2) {
-      setSortedIndices2((prevSortedIndices) => {
-        return [...prevSortedIndices, ...newIndices];
-      });
+      setSortedIndices2([...newIndices]);
     }
+    const endTime = performance.now();
+    const timeTaken = endTime - startTime;
+    console.log("Time taken is (using Quick Sort) : ", timeTaken);
   }
 
   async function quickSort(arr, low, high, order) {
@@ -212,21 +256,6 @@ function CompareSorting() {
 
       await quickSort(arr, low, pi - 1, order);
       await quickSort(arr, pi + 1, high, order);
-      const newIndex = [];
-      for (let index = low; index < high; index++) {
-        newIndex.push(index);
-      }
-      console.log("Newindex in quick sort is : ", newIndex);
-
-      if (order === 1) {
-        setSortedIndices1((prevSortedIndices) => {
-          return [...prevSortedIndices, newIndex];
-        });
-      } else if (order === 2) {
-        setSortedIndices2((prevSortedIndices) => {
-          return [...prevSortedIndices, newIndex];
-        });
-      }
     }
   }
 
@@ -246,82 +275,57 @@ function CompareSorting() {
       }
       await new Promise((resolve) => setTimeout(resolve, sortingSpeed));
       if (arr[j] < pivot) {
-        if (order === 1) {
-          setSwappedIndices1([i + 1, j]);
-        } else if (order === 2) {
-          setSwappedIndices2([i + 1, j]);
-        }
         i++;
         [arr[i], arr[j]] = [arr[j], arr[i]];
-        // setCommonArray([...arr]);
         if (order === 1) {
+          setSwappedIndices1([i, j]);
           setArray1([...arr]);
-        } else if (order === 2) {
-          setArray2([...arr]);
-        }
-        if (order === 1) {
           setSwappedIndices1([]);
         } else if (order === 2) {
+          setSwappedIndices2([i, j]);
+          setArray2([...arr]);
           setSwappedIndices2([]);
         }
       }
     }
-    if (order === 1) {
-      setSwappedIndices1([i + 1, high]);
-    } else if (order === 2) {
-      setSwappedIndices2([i + 1, high]);
-    }
+    [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
 
-    let swap = arr[i + 1];
-    arr[i + 1] = arr[high]; // Fix assignment here
-    arr[high] = swap;
-    if (order === 1) {
-      setSwappedIndices1([]);
-    } else if (order === 2) {
-      setSwappedIndices2([]);
-    }
-    // setCommonArray([...arr]);
     if (order === 1) {
       setArray1([...arr]);
-    } else if (order === 2) {
-      setArray2([...arr]);
-    }
-    if (order === 1) {
       setPivotIndex1(-1);
     } else if (order === 2) {
+      setArray2([...arr]);
       setPivotIndex2(-1);
     }
     return i + 1;
   }
 
   async function handleMergeSort(newArray, order) {
+    const startTime = performance.now();
+
     setSorting(true);
-    // let newArray = [...commonArray];
     await mergeSort(newArray, 0, newArray.length - 1, order);
     const newIndices = [];
     for (let index = 0; index < newArray.length; index++) {
       newIndices.push(index);
     }
-    // console.log("NewIndices are : ", newIndices);
     if (order === 1) {
-      setSortedIndices1((prevSortedIndices) => {
-        return [...prevSortedIndices, ...newIndices];
-      });
+      setSortedIndices1([...newIndices]);
     } else if (order === 2) {
-      setSortedIndices2((prevSortedIndices) => {
-        return [...prevSortedIndices, ...newIndices];
-      });
+      setSortedIndices2([...newIndices]);
     }
-
     setSorting(false);
-    // setSwappedIndices([]);
+
+    const endTime = performance.now();
+    const timeTaken = endTime - startTime;
+    console.log("Time taken is (using Merge Sort) : ", timeTaken);
   }
 
   async function mergeSort(arr, l, r, order) {
     if (l < r) {
       const m = Math.floor((l + r) / 2);
-      await mergeSort(arr, l, m);
-      await mergeSort(arr, m + 1, r);
+      await mergeSort(arr, l, m, order);
+      await mergeSort(arr, m + 1, r, order);
       await merge(arr, l, m, r, order);
     }
   }
@@ -331,22 +335,15 @@ function CompareSorting() {
     const n2 = r - m;
     const L = new Array(n1);
     const R = new Array(n2);
-    const newIndices = [];
 
     for (let i = 0; i < n1; i++) {
-      if (order === 1) {
-        setActiveIndex1(i);
-      } else if (order === 2) {
-        setActiveIndex2(i);
-      }
+      if (order === 1) setActiveIndex1(i);
+      else if (order === 2) setActiveIndex2(i);
       L[i] = arr[l + i];
     }
     for (let j = 0; j < n2; j++) {
-      if (order === 1) {
-        setActiveIndex1(i);
-      } else if (order === 2) {
-        setActiveIndex2(i);
-      }
+      if (order === 1) setActiveIndex1(j);
+      else if (order === 2) setActiveIndex2(j);
       R[j] = arr[m + 1 + j];
     }
 
@@ -356,72 +353,48 @@ function CompareSorting() {
 
     while (i < n1 && j < n2) {
       if (L[i] <= R[j]) {
+        if (order === 1) setActiveIndex1(i);
+        else if (order === 2) setActiveIndex2(i);
         arr[k] = L[i];
         i++;
-        if (order === 1) {
-          setSwappedIndices1([i, j]);
-        } else if (order === 2) {
-          setSwappedIndices2([i, j]);
-        }
       } else {
+        if (order === 1) setActiveIndex1(j);
+        else if (order === 2) setActiveIndex2(j);
         arr[k] = R[j];
         j++;
-        if (order === 1) {
-          setSwappedIndices1([i, j]);
-        } else if (order === 2) {
-          setSwappedIndices2([i, j]);
-        }
       }
       k++;
-      // setCommonArray([...arr]); // Update the array during sorting
+
       if (order === 1) {
-        setArray1([...newArray]);
+        setArray1([...arr]);
       } else if (order === 2) {
-        setArray2([...newArray]);
+        setArray2([...arr]);
       }
-      await new Promise((resolve) => setTimeout(resolve, sortingSpeed)); // Delay for visualization
+      await new Promise((resolve) => setTimeout(resolve, sortingSpeed));
     }
 
-    if (order === 1) setSwappedIndices1([]);
-    else if (order === 2) setSwappedIndices2([]);
-
     while (i < n1) {
-      if (order === 1) {
-        setActiveIndex1(i);
-        setSwappedIndices1([i, k]);
-      } else if (order === 2) {
-        setActiveIndex2(i);
-        setSwappedIndices2([i, k]);
-      }
-
       arr[k] = L[i];
       i++;
       k++;
-      // setCommonArray([...arr]);
+
       if (order === 1) {
-        setArray1([...newArray]);
+        setArray1([...arr]);
       } else if (order === 2) {
-        setArray2([...newArray]);
+        setArray2([...arr]);
       }
       await new Promise((resolve) => setTimeout(resolve, sortingSpeed));
     }
 
     while (j < n2) {
-      if (order === 1) {
-        setActiveIndex1(i);
-        setSwappedIndices1([i, k]);
-      } else if (order === 2) {
-        setActiveIndex2(i);
-        setSwappedIndices2([i, k]);
-      }
       arr[k] = R[j];
       j++;
       k++;
-      // setCommonArray([...arr]);
+
       if (order === 1) {
-        setArray1([...newArray]);
+        setArray1([...arr]);
       } else if (order === 2) {
-        setArray2([...newArray]);
+        setArray2([...arr]);
       }
       await new Promise((resolve) => setTimeout(resolve, sortingSpeed));
     }
@@ -430,23 +403,17 @@ function CompareSorting() {
     for (let index = l; index <= r; index++) {
       newIndex.push(index);
     }
-    // console.log("NewIndexes are : ", newIndex);
-
-    /*     setSortedIndices((prevSortedIndices) => {
-      return [...prevSortedIndices, ...newIndex];
-    });
-    setSwappedIndices([]); */
 
     if (order === 1) {
-      setSortedIndices1((prevSortedIndices) => {
-        return [...prevSortedIndices, ...newIndex];
-      });
-      setSwappedIndices1([]);
+      setSortedIndices1((prevSortedIndices) => [
+        ...prevSortedIndices,
+        ...newIndex,
+      ]);
     } else if (order === 2) {
-      setSortedIndices2((prevSortedIndices) => {
-        return [...prevSortedIndices, ...newIndex];
-      });
-      setSwappedIndices2([]);
+      setSortedIndices2((prevSortedIndices) => [
+        ...prevSortedIndices,
+        ...newIndex,
+      ]);
     }
   }
 
@@ -515,6 +482,7 @@ function CompareSorting() {
       </div>
 
       <div className=" min-h-32 bg-[#153448] flex flex-row items-start justify-evenly">
+        {/* For array1 */}
         <Dropdown
           value={setSortingOptions.firstSortingOption}
           onChange={(e) => {
@@ -530,6 +498,8 @@ function CompareSorting() {
           placeholder="Select an Algorithm"
           className="text-[#E3FEF7]"
         />
+
+        {/* For array2 */}
         <Dropdown
           value={setSortingOptions.firstSortingOption}
           onChange={(e) => {
