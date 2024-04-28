@@ -13,6 +13,7 @@ function GenerateRandomArray() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sortingOptionSelected, setSortingOptionSelected] = useState("");
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("");
+  const [numberOfElements, setNumberOfElements] = useState(10);
 
   const sortingSpeed = 200;
 
@@ -24,10 +25,7 @@ function GenerateRandomArray() {
   ];
 
   function submitSortingMethodHandler() {
-
-
     setSortingOptionSelected(selectedAlgorithm.name);
-
 
     if (sortingOptionSelected === "Bubble Sort") {
       handleBubbleSort();
@@ -41,7 +39,7 @@ function GenerateRandomArray() {
   }
 
   function generateRandomArray() {
-    return Array.from({ length: 20 }, () => {
+    return Array.from({ length: 10 }, () => {
       let value;
       do {
         value = Math.floor(Math.random() * 100);
@@ -262,9 +260,9 @@ function GenerateRandomArray() {
   }
 
   return (
-    <div>
+    <div className="bg-[#f6f1f0]">
       <div className="flex flex-col items-center justify-center min-h-60 border border-red-600">
-        <div className="flex items-end ">
+        <div className="flex flex-row items-end justify-center min-h-60 border border-pink-700 ">
           {randomArray.map((value, index) => (
             <div key={index} className="flex flex-col">
               <div
@@ -279,23 +277,29 @@ function GenerateRandomArray() {
                     ? "bg-red-900"
                     : activeIndex === index
                     ? "bg-yellow-500"
-                    : "bg-blue-500"
+                    : "bg-[#003C43]"
                 } text-white flex items-end justify-center rounded`}
-                style={{ height: `${value}px`, width: "30px", margin: "0 3px" }}
+                style={{
+                  height: `${value * 1.5}px`,
+                  width: "30px",
+                  margin: "0 3px",
+                }}
               ></div>
               <p className="mx-2">{value}</p>
             </div>
           ))}
         </div>
 
-        <div className="">
+        <div className="flex flex-row justify-center">
           <button
             disabled={sorting}
             onClick={handleGenerate}
-            className="disabled:opacity-80 disabled:hover:bg-green-500 mx-2 py-1 px-4 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+            className=" disabled:opacity-80 disabled:hover:bg-green-500 py-1 px-4 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
           >
             Generate
           </button>
+        </div>
+        {/* <div className=" grid-cols-1">
           <button className="disabled:opacity-80 disabled:hover:bg-red-500 mx-2 py-1 px-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
             Bubble Sort
           </button>
@@ -308,7 +312,8 @@ function GenerateRandomArray() {
           <button className="disabled:opacity-80 disabled:hover:bg-red-500 mx-2 py-1 px-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
             Quick Sort
           </button>
-        </div>
+        </div> */}
+
         <div>
           <Dropdown
             value={selectedAlgorithm}

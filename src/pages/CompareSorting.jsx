@@ -3,7 +3,6 @@ import "react-dropdown/style.css";
 import { Button } from "@material-tailwind/react";
 import { Dropdown } from "primereact/dropdown";
 
-
 function CompareSorting() {
   const [commonArray, setCommonArray] = useState(generateRandomArray());
   const [array1, setArray1] = useState([...commonArray]);
@@ -419,11 +418,11 @@ function CompareSorting() {
 
   return (
     <div>
-      <div className="bg-[#153448] min-h-96 flex flex-row items-center justify-evenly sm:min-h-60">
+      <div className="bg-[#F7EBE8] min-h-96 flex flex-row items-center justify-evenly sm:min-h-60">
         <div className="flex flex-col justify-around gap-8 lg:flex lg:flex-row ">
-          <div className="flex items-end min-h-48 border  border-[#3C5B6F] bg-[#3C5B6F]">
+          <div className="flex items-end min-h-48 rounded-xl px-2 bg-[#E54B4B] shadow-2xl overflow-x-auto">
             {array1.map((value, index) => (
-              <div key={index} className="flex flex-col ">
+              <div key={index} className="flex flex-col items-center">
                 <div
                   className={`h-auto ${
                     pivotIndex1 === index
@@ -431,26 +430,27 @@ function CompareSorting() {
                       : swappedIndices1.includes(index)
                       ? "bg-yellow-800"
                       : sortedIndices1.includes(index)
-                      ? "bg-pink-500"
+                      ? "bg-red-900"
                       : minIndex1 === index
                       ? "bg-red-900"
                       : activeIndex1 === index
                       ? "bg-yellow-500"
-                      : "bg-[#153448]"
-                  } text-white flex items-end justify-center rounded`}
+                      : "bg-[#FFA987]"
+                  } text-white flex items-end justify-center rounded shadow-md transform transition-transform`}
                   style={{
                     height: `${value / 10}rem`,
                     width: "2rem",
                     margin: "0 0.2rem",
                     minWidth: "2rem",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                   }}
                 ></div>
-                <p className="mx-2 text-[#E3FEF7]">{value}</p>
+                <p className="mt-1 font-bold text-[#FFA987]">{value}</p>
               </div>
             ))}
           </div>
 
-          <div className="flex items-end min-h-48 border  border-[#3C5B6F] bg-[#3C5B6F]">
+          {/* <div className="flex items-end min-h-48 rounded-xl px-2  bg-[#FFA987]">
             {array2.map((value, index) => (
               <div key={index} className="flex flex-col ">
                 <div
@@ -465,7 +465,7 @@ function CompareSorting() {
                       ? "bg-red-900"
                       : activeIndex2 === index
                       ? "bg-yellow-500"
-                      : "bg-[#153448]"
+                      : "bg-[#E54B4B]"
                   } text-white flex items-end justify-center rounded`}
                   style={{
                     height: `${value / 10}rem`,
@@ -474,14 +474,44 @@ function CompareSorting() {
                     minWidth: "2rem",
                   }}
                 ></div>
-                <p className="mx-2 text-[#e3f4ff]">{value}</p>
+                <p className="mx-2 font-bold text-[#E54B4B]">{value}</p>
+              </div>
+            ))}
+          </div> */}
+
+          <div className="flex items-end min-h-48 rounded-xl px-2 bg-[#E54B4B] shadow-2xl overflow-x-auto">
+            {array2.map((value, index) => (
+              <div key={index} className="flex flex-col items-center">
+                <div
+                  className={`h-auto ${
+                    pivotIndex2 === index
+                      ? "bg-green-700"
+                      : swappedIndices2.includes(index)
+                      ? "bg-yellow-800"
+                      : sortedIndices2.includes(index)
+                      ? "bg-red-900"
+                      : minIndex2 === index
+                      ? "bg-red-900"
+                      : activeIndex2 === index
+                      ? "bg-yellow-500"
+                      : "bg-[#FFA987]"
+                  } text-white flex items-end justify-center rounded shadow-md transform transition-transform`}
+                  style={{
+                    height: `${value / 10}rem`,
+                    width: "2rem",
+                    margin: "0 0.2rem",
+                    minWidth: "2rem",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  }}
+                ></div>
+                <p className="mt-1 font-bold text-[#FFA987]">{value}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className=" min-h-32 bg-[#153448] flex flex-row items-start justify-evenly">
+      <div className=" min-h-32 bg-[#FFA987] flex flex-row items-start justify-evenly">
         {/* For array1 */}
         <Dropdown
           value={setSortingOptions.firstSortingOption}
@@ -519,7 +549,7 @@ function CompareSorting() {
 
       <div className="flex flex-col gap-2 items-center justify-center my-4">
         <Button
-          className="uppercase px-4 py-2 rounded-none text-center bg-[#153448] text-[#e3f4ff]"
+          className="uppercase px-4 py-2 rounded-none text-center bg-[#FFA987] text-[#E54B4B] font-bold"
           variant="filled"
           color="blue"
           onClick={handleGenerate}
@@ -527,7 +557,7 @@ function CompareSorting() {
           Generate Random Array
         </Button>
         <Button
-          className="uppercase px-4 py-2 rounded-none text-center bg-[#153448] text-[#e3f4ff]"
+          className="uppercase px-4 py-2 rounded-none text-center bg-[#FFA987] text-[#E54B4B] font-bold"
           variant="filled"
           color="blue"
           onClick={sortArraysHandler}
