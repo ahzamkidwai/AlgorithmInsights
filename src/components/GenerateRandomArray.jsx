@@ -15,14 +15,25 @@ function GenerateRandomArray() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sortingOptionSelected, setSortingOptionSelected] = useState("");
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("");
-
-  const sortingSpeed = 200;
+  const [sortingSpeed, setSortingSpeed] = useState(100);
+  const [timeTaken, setTimeTaken] = useState("");
 
   const sortingAlgorithms = [
     { name: "Bubble Sort" },
     { name: "Selection Sort" },
     { name: "Merge Sort" },
     { name: "Quick Sort" },
+  ];
+
+  const sortingSpeedFactor = [
+    { speedVal: "0.25x" },
+    { speedVal: "0.50x" },
+    { speedVal: "1x" },
+    { speedVal: "1.50x" },
+    { speedVal: "1.75x" },
+    { speedVal: "2x" },
+    { speedVal: "4x" },
+    { speedVal: "8x" },
   ];
 
   function submitSortingMethodHandler() {
@@ -58,6 +69,8 @@ function GenerateRandomArray() {
   }
 
   async function handleBubbleSort() {
+    const startTime = performance.now();
+
     setSorting(true);
     let newArray = [...randomArray]; // Create a copy of the array
     let len = newArray.length;
@@ -83,9 +96,13 @@ function GenerateRandomArray() {
 
     setActiveIndex(-1); // Reset active index
     setSorting(false);
+
+    const endTime = performance.now();
+    setTimeTaken(endTime - startTime);
   }
 
   async function handleSelectionSort() {
+    const startTime = performance.now();
     setSorting(true);
     let newArray = [...randomArray];
     let len = newArray.length;
@@ -107,6 +124,8 @@ function GenerateRandomArray() {
     }
     setSortedIndices((prevSortedIndices) => [...prevSortedIndices, len - 1]); // Mark the element as sorted
     setSorting(false);
+    const endTime = performance.now();
+    setTimeTaken(endTime - startTime);
   }
 
   async function handleMergeSort() {
@@ -294,7 +313,7 @@ function GenerateRandomArray() {
         </div>
 
         <div className=" flex flex-col">
-          <div className="flex flex-row items-center gap-3 text-[#40A2E3] font-bold justify-center pt-8">
+          <div className="flex flex-row items-center gap-3 text-[#40A2E3] font-bold text-lg justify-center pt-8">
             Size of an Array
             <InputText
               value={numberOfElements}
@@ -314,40 +333,63 @@ function GenerateRandomArray() {
             <button
               disabled={sorting}
               onClick={handleGenerate}
-              className="disabled:opacity-80 disabled:hover:bg-green-500 py-1 px-4 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 shadow-md hover:shadow-lg transition duration-300"
+              className="disabled:opacity-80 disabled:hover:bg-green-500 py-1 px-4 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none shadow-md hover:shadow-lg transition duration-300 text-base"
             >
               Generate
             </button>
           </div>
-          <p className="text-red-600 font-medium">
+          <p className="text-red-600 font-medium text-center">
             Note : The value of size varies from 1 to 30
           </p>
         </div>
 
         <div className="py-4">
-          <Dropdown
-            value={selectedAlgorithm}
-            onChange={(e) => {
-              setSelectedAlgorithm(e.target.value);
-              setSortingOptionSelected(e.target.value);
-              console.log("Event.target : ", e.target.value);
-            }}
-            options={sortingAlgorithms}
-            optionLabel="name"
-            placeholder="Select a sorting algorithm"
-            className="w-full md:w-64 border rounded p-2 focus:outline-none text-white bg-[#9AC8CD] shadow-md"
-            
-            panelClassName="bg-white  border rounded shadow-md text-red-800 shadow-2xl"
-            dropdownIcon="pi pi-chevron-down"
-          />
-          <Button
-            label="Submit"
-            onClick={submitSortingMethodHandler}
-            className="bg-blue-500 disabled:opacity-55 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 shadow-md hover:shadow-lg transition duration-300"
-            disabled={sorting}
-          />
+          <div className="flex flex-row gap-[37px] items-center ">
+            <p> Select Algorithm </p>
+            <Dropdown
+              value={selectedAlgorithm}
+              onChange={(e) => {
+                setSelectedAlgorithm(e.target.value);
+                setSortingOptionSelected(e.target.value);
+                console.log("Event.target : ", e.target.value);
+              }}
+              options={sortingAlgorithms}
+              optionLabel="name"
+              placeholder="Select a sorting algorithm"
+              className="w-full md:w-64 border rounded p-2 focus:outline-none text-white bg-[#9AC8CD] shadow-md"
+              panelClassName="bg-white  border rounded shadow-md text-red-800 shadow-2xl"
+              dropdownIcon="pi pi-chevron-down"
+            />
+          </div>
+
+          <div className="flex flex-row gap-2 items-center ">
+            <p> Select Sorting Speed </p>
+            <Dropdown
+              value={sortingSpeed}
+              onChange={(e) => {
+                let speedValue = e.target.value.speedVal;
+                let newSpeedFactor = speedValue.slice(0, -1);
+                console.log("newSpeedValue is : ", newSpeedFactor);
+                let value = 1000 / (2 * newSpeedFactor);
+                setSortingSpeed(value); // Set speed to newSpeedValue, not speedValue
+              }}
+              options={sortingSpeedFactor}
+              optionLabel="speedVal"
+              placeholder="Select sorting speed"
+              className="w-full md:w-64 border rounded p-2 focus:outline-none text-white bg-[#9AC8CD] shadow-md"
+              panelClassName="bg-white border rounded shadow-md text-red-800 shadow-2xl"
+              dropdownIcon="pi pi-chevron-down"
+            />
+          </div>
         </div>
+        <Button
+          label="Submit"
+          onClick={submitSortingMethodHandler}
+          className="bg-blue-500 disabled:opacity-55 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 shadow-md hover:shadow-lg transition duration-300"
+          disabled={sorting}
+        />
       </div>
+      {timeTaken && <p>Time complexity is : {timecomplexity}</p>}
     </div>
   );
 }
