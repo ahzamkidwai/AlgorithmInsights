@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
+import { InputText } from "primereact/inputtext";
 
 function GenerateRandomArray() {
+  const [numberOfElements, setNumberOfElements] = useState(10);
   const [randomArray, setRandomArray] = useState(generateRandomArray());
   const [activeIndex, setActiveIndex] = useState(-1);
   const [sortedIndices, setSortedIndices] = useState([]);
@@ -13,7 +15,6 @@ function GenerateRandomArray() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sortingOptionSelected, setSortingOptionSelected] = useState("");
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("");
-  const [numberOfElements, setNumberOfElements] = useState(10);
 
   const sortingSpeed = 200;
 
@@ -39,7 +40,7 @@ function GenerateRandomArray() {
   }
 
   function generateRandomArray() {
-    return Array.from({ length: 10 }, () => {
+    return Array.from({ length: numberOfElements }, () => {
       let value;
       do {
         value = Math.floor(Math.random() * 100);
@@ -292,14 +293,35 @@ function GenerateRandomArray() {
           ))}
         </div>
 
-        <div className="flex flex-row justify-center pt-8">
-          <button
-            disabled={sorting}
-            onClick={handleGenerate}
-            className="disabled:opacity-80 disabled:hover:bg-green-500 py-1 px-4 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 shadow-md hover:shadow-lg transition duration-300"
-          >
-            Generate
-          </button>
+        <div className=" flex flex-col">
+          <div className="flex flex-row items-center gap-3 text-[#40A2E3] font-bold justify-center pt-8">
+            Size of an Array
+            <InputText
+              value={numberOfElements}
+              onChange={(e) => {
+                const value = parseInt(e.target.value);
+                if (value >= 1 && value <= 30) {
+                  setNumberOfElements(value);
+                } else if (value < 1) {
+                  setNumberOfElements(1);
+                } else {
+                  setNumberOfElements(30);
+                }
+              }}
+              placeholder="Enter Length of Array"
+              className="rounded-md text-black font-thin"
+            />
+            <button
+              disabled={sorting}
+              onClick={handleGenerate}
+              className="disabled:opacity-80 disabled:hover:bg-green-500 py-1 px-4 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 shadow-md hover:shadow-lg transition duration-300"
+            >
+              Generate
+            </button>
+          </div>
+          <p className="text-red-600 font-medium">
+            Note : The value of size varies from 1 to 30
+          </p>
         </div>
 
         <div className="py-4">
@@ -314,8 +336,8 @@ function GenerateRandomArray() {
             optionLabel="name"
             placeholder="Select a sorting algorithm"
             className="w-full md:w-64 border rounded p-2 focus:outline-none text-white bg-[#9AC8CD] shadow-md"
-            // Additional style classes
-            panelClassName="bg-white border rounded shadow-md text-red-800 shadow-2xl"
+            
+            panelClassName="bg-white  border rounded shadow-md text-red-800 shadow-2xl"
             dropdownIcon="pi pi-chevron-down"
           />
           <Button
