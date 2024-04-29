@@ -260,9 +260,9 @@ function GenerateRandomArray() {
   }
 
   return (
-    <div className="bg-[#f6f1f0]">
-      <div className="flex flex-col items-center justify-center min-h-60 border border-red-600">
-        <div className="flex flex-row items-end justify-center min-h-60 border border-pink-700 ">
+    <div className="bg-[#F7EBE8]">
+      <div className="flex flex-col items-center justify-center h-2/3 py-20 ">
+        <div className="flex flex-row items-end justify-center min-h-60 bg-[#F8F6E3]  rounded-lg px-4  shadow-lg">
           {randomArray.map((value, index) => (
             <div key={index} className="flex flex-col">
               <div
@@ -276,45 +276,33 @@ function GenerateRandomArray() {
                     : minIndex === index
                     ? "bg-red-900"
                     : activeIndex === index
-                    ? "bg-yellow-500"
-                    : "bg-[#003C43]"
-                } text-white flex items-end justify-center rounded`}
+                    ? "bg-[#ffae45]"
+                    : "bg-[#40A2E3]"
+                } text-white flex items-end justify-center rounded shadow-md transform transition-transform`}
                 style={{
-                  height: `${value * 1.5}px`,
-                  width: "30px",
-                  margin: "0 3px",
+                  height: `${value / 10}rem`,
+                  width: "2rem",
+                  margin: "0 0.2rem",
+                  minWidth: "2rem",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                 }}
               ></div>
-              <p className="mx-2">{value}</p>
+              <p className="mx-2 font-bold text-[#40A2E3]">{value}</p>
             </div>
           ))}
         </div>
 
-        <div className="flex flex-row justify-center">
+        <div className="flex flex-row justify-center pt-8">
           <button
             disabled={sorting}
             onClick={handleGenerate}
-            className=" disabled:opacity-80 disabled:hover:bg-green-500 py-1 px-4 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+            className="disabled:opacity-80 disabled:hover:bg-green-500 py-1 px-4 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 shadow-md hover:shadow-lg transition duration-300"
           >
             Generate
           </button>
         </div>
-        {/* <div className=" grid-cols-1">
-          <button className="disabled:opacity-80 disabled:hover:bg-red-500 mx-2 py-1 px-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
-            Bubble Sort
-          </button>
-          <button className="disabled:opacity-80 disabled:hover:bg-red-500 mx-2 py-1 px-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
-            Selection Sort
-          </button>
-          <button className="disabled:opacity-80 disabled:hover:bg-red-500 mx-2 py-1 px-4 bg-red-500   text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
-            Merge Sort
-          </button>
-          <button className="disabled:opacity-80 disabled:hover:bg-red-500 mx-2 py-1 px-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
-            Quick Sort
-          </button>
-        </div> */}
 
-        <div>
+        <div className="py-4">
           <Dropdown
             value={selectedAlgorithm}
             onChange={(e) => {
@@ -325,15 +313,18 @@ function GenerateRandomArray() {
             options={sortingAlgorithms}
             optionLabel="name"
             placeholder="Select a sorting algorithm"
-            className="w-full md:w-64 border rounded p-2 focus:outline-none focus:border-blue-500"
+            className="w-full md:w-64 border rounded p-2 focus:outline-none text-white bg-[#9AC8CD] shadow-md"
+            // Additional style classes
+            panelClassName="bg-white border rounded shadow-md text-red-800 shadow-2xl"
+            dropdownIcon="pi pi-chevron-down"
+          />
+          <Button
+            label="Submit"
+            onClick={submitSortingMethodHandler}
+            className="bg-blue-500 disabled:opacity-55 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 shadow-md hover:shadow-lg transition duration-300"
+            disabled={sorting}
           />
         </div>
-        <Button
-          label="Submit"
-          onClick={submitSortingMethodHandler}
-          className="bg-blue-500 disabled:opacity-55 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-          disabled={sorting}
-        />
       </div>
     </div>
   );
