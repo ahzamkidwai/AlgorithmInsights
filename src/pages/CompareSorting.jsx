@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import "react-dropdown/style.css";
 import { Button } from "@material-tailwind/react";
 import { Dropdown } from "primereact/dropdown";
-import {
-  CDropdown,
-  CDropdownItem,
-  CDropdownMenu,
-  CDropdownToggle,
-} from "@coreui/react";
+import { InputText } from "primereact/inputtext";
+
 // import { Dropdown, ButtonToolbar } from "rsuite";
 
 function CompareSorting() {
+  const [numberOfElements, setNumberOfElements] = useState(10);
   const [commonArray, setCommonArray] = useState(generateRandomArray());
   const [array1, setArray1] = useState([...commonArray]);
   const [array2, setArray2] = useState([...commonArray]);
@@ -44,6 +41,7 @@ function CompareSorting() {
     { name: "Bubble Sort" },
     { name: "Merge Sort" },
     { name: "Quick Sort" },
+    { name: "Insertion Sort" },
   ];
 
   function changeSelectedAlgorithmHandler(value, option) {
@@ -68,6 +66,8 @@ function CompareSorting() {
         await handleMergeSort(array1, 1);
       } else if (firstOption === "Quick Sort") {
         await handleQuickSort(array1, 1);
+      } else if (firstOption === "Insertion Sort") {
+        await handleInsertionSort(array1, 1);
       }
     };
 
@@ -80,6 +80,8 @@ function CompareSorting() {
         await handleMergeSort(array2, 2);
       } else if (secondOption === "Quick Sort") {
         await handleQuickSort(array2, 2);
+      } else if (secondOption === "Insertion Sort") {
+        await handleInsertionSort(array2, 2);
       }
     };
 
@@ -87,7 +89,7 @@ function CompareSorting() {
   }
 
   function generateRandomArray() {
-    return Array.from({ length: 10 }, () => {
+    return Array.from({ length: numberOfElements }, () => {
       let value;
       do {
         value = Math.floor(Math.random() * 100);
@@ -229,6 +231,67 @@ function CompareSorting() {
     console.log("Time taken is (using Bubble Sort) : ", timeTaken);
   }
 
+  async function handleInsertionSort(newArray, order) {
+    const startTime = performance.now();
+    setSorting(true);
+    let len = newArray.length;
+
+    if (order === 1) {
+      setSortedIndices1([0]); // Mark the first element as sorted
+    } else if (order === 2) {
+      setSortedIndices2([0]); // Mark the first element as sorted
+    }
+
+    for (let i = 1; i < len; i++) {
+      let key = newArray[i];
+      let j = i - 1;
+
+      if (order === 1) {
+        setActiveIndex1(i);
+      } else if (order === 2) {
+        setActiveIndex2(i);
+      }
+
+      while (j >= 0 && newArray[j] > key) {
+        if (order === 1) {
+          setActiveIndex1(j);
+        } else if (order === 2) {
+          setActiveIndex2(j);
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, sortingSpeed));
+        newArray[j + 1] = newArray[j];
+        j = j - 1;
+
+        if (order === 1) {
+          setArray1([...newArray]);
+        } else if (order === 2) {
+          setArray2([...newArray]);
+        }
+      }
+      newArray[j + 1] = key;
+
+      if (order === 1) {
+        setArray1([...newArray]);
+        setSortedIndices1((prevSortedIndices) => [...prevSortedIndices, i]); // Mark the element as sorted
+      } else if (order === 2) {
+        setArray2([...newArray]);
+        setSortedIndices2((prevSortedIndices) => [...prevSortedIndices, i]); // Mark the element as sorted
+      }
+    }
+
+    if (order === 1) {
+      setSortedIndices1((prevSortedIndices) => [...prevSortedIndices, len - 1]); // Mark the last element as sorted
+    } else if (order === 2) {
+      setSortedIndices2((prevSortedIndices) => [...prevSortedIndices, len - 1]); // Mark the last element as sorted
+    }
+
+    setSorting(false);
+    const endTime = performance.now();
+    const timeTaken = endTime - startTime;
+    console.log("Time taken is (using Insertion Sort): ", timeTaken);
+  }
+
   async function handleQuickSort(newArray, order) {
     const startTime = performance.now();
     setSorting(true);
@@ -310,6 +373,13 @@ function CompareSorting() {
     const startTime = performance.now();
 
     setSorting(true);
+
+    console.log("Array is (inside MergeSort Before Sorting) : ", newArray);
+    console.log(
+      "Array size is  (inside MergeSort Before Sorting) : ",
+      newArray.length
+    );
+
     await mergeSort(newArray, 0, newArray.length - 1, order);
     const newIndices = [];
     for (let index = 0; index < newArray.length; index++) {
@@ -325,6 +395,12 @@ function CompareSorting() {
     const endTime = performance.now();
     const timeTaken = endTime - startTime;
     console.log("Time taken is (using Merge Sort) : ", timeTaken);
+
+    console.log("Array is (inside MergeSort After Sorting) : ", newArray);
+    console.log(
+      "Array size is  (inside MergeSort After Sorting) : ",
+      newArray.length
+    );
   }
 
   async function mergeSort(arr, l, r, order) {
@@ -424,9 +500,9 @@ function CompareSorting() {
   }
 
   return (
-    <div>
-      <div className="bg-[#F7EBE8] min-h-96 h-96   flex flex-row items-center justify-evenly sm:min-h-60">
-        <div className="flex flex-col justify-around gap-8 lg:flex lg:flex-row ">
+    <div className="bg-[#F7EBE8]">
+      <div className=" min-h-96 pt-12 border border-green-700  flex flex-row items-center justify-evenly sm:min-h-60">
+        <div className="flex flex-col gap-8">
           <div className="flex items-end min-h-60 rounded-xl px-2 bg-[#F8F6E3] shadow-2xl overflow-x-auto">
             {array1.map((value, index) => (
               <div key={index} className="flex flex-col items-center">
@@ -437,7 +513,7 @@ function CompareSorting() {
                       : swappedIndices1.includes(index)
                       ? "bg-yellow-800"
                       : sortedIndices1.includes(index)
-                      ? "bg-red-900"
+                      ? "bg-pink-500"
                       : minIndex1 === index
                       ? "bg-red-900"
                       : activeIndex1 === index
@@ -457,8 +533,6 @@ function CompareSorting() {
             ))}
           </div>
 
-         
-
           <div className="flex items-end min-h-48 rounded-xl px-2 bg-[#F8F6E3] shadow-2xl overflow-x-auto">
             {array2.map((value, index) => (
               <div key={index} className="flex flex-col items-center">
@@ -469,7 +543,7 @@ function CompareSorting() {
                       : swappedIndices2.includes(index)
                       ? "bg-yellow-800"
                       : sortedIndices2.includes(index)
-                      ? "bg-red-900"
+                      ? "bg-pink-500"
                       : minIndex2 === index
                       ? "bg-red-900"
                       : activeIndex2 === index
@@ -491,9 +565,10 @@ function CompareSorting() {
         </div>
       </div>
 
-      <div className=" min-h-32  flex flex-row items-start justify-evenly">
+      <div className=" flex flex-row items-start justify-evenly">
         {/* For array1 */}
-        {/* <Dropdown
+
+        <Dropdown
           value={setSortingOptions.firstSortingOption}
           onChange={(e) => {
             const selectedOption = e.value ? e.value.name : "";
@@ -505,27 +580,19 @@ function CompareSorting() {
           }}
           options={sortingAlgorithmsOptions}
           optionLabel="name"
-          placeholder="Select an Algorithm"
-          className="text-[#E3FEF7]"
-        /> */}
-
-        <CDropdown>
-          <CDropdownToggle href="#" color="secondary">
-            Dropdown button
-          </CDropdownToggle>
-          <CDropdownMenu>
-            <CDropdownItem href="#">Action</CDropdownItem>
-            <CDropdownItem href="#">Another action</CDropdownItem>
-            <CDropdownItem href="#">Something else here</CDropdownItem>
-          </CDropdownMenu>
-        </CDropdown>
+          placeholder="Select first sorting option"
+          className="w-full md:w-64 border rounded p-2 focus:outline-none text-white bg-[#9AC8CD] shadow-md"
+          panelClassName="bg-white  border rounded shadow-md text-red-800 shadow-2xl"
+          dropdownIcon="pi pi-chevron-down"
+        />
 
         {/* For array2 */}
+
         <Dropdown
-          value={setSortingOptions.firstSortingOption}
+          value={setSortingOptions.secondSortingOption}
           onChange={(e) => {
             const selectedOption = e.value ? e.value.name : "";
-            console.log("Second Selections option : ", selectedOption);
+            console.log("Second selected option : ", selectedOption);
             changeSelectedAlgorithmHandler(
               selectedOption,
               "secondSortingOption"
@@ -533,22 +600,47 @@ function CompareSorting() {
           }}
           options={sortingAlgorithmsOptions}
           optionLabel="name"
-          placeholder="Select an Algorithm"
-          className="text-red-900 border px-4 bg-red-200"
+          placeholder="Select second sorting option "
+          className="w-full md:w-64 border rounded p-2 focus:outline-none text-white bg-[#9AC8CD] shadow-md"
+          panelClassName="bg-white  border rounded shadow-md text-red-800 shadow-2xl"
+          dropdownIcon="pi pi-chevron-down"
         />
+      </div>
+
+      <div className=" flex flex-col">
+        <div className="flex flex-row items-center gap-3 text-[#40A2E3] font-bold text-lg justify-center pt-8">
+          Size of an Array
+          <InputText
+            value={numberOfElements}
+            onChange={(e) => {
+              const value = parseInt(e.target.value);
+              if (value >= 1 && value <= 30) {
+                setNumberOfElements(value);
+              } else if (value < 1) {
+                setNumberOfElements(1);
+              } else {
+                setNumberOfElements(30);
+              }
+            }}
+            placeholder="Enter Length of Array"
+            className="rounded-md text-black font-thin"
+          />
+          <button
+            disabled={sorting}
+            onClick={handleGenerate}
+            className="disabled:opacity-80 disabled:hover:bg-green-500 py-1 px-4 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none shadow-md hover:shadow-lg transition duration-300 text-base"
+          >
+            Generate
+          </button>
+        </div>
+        <p className="text-red-600 font-medium text-center">
+          Note : The value of size varies from 1 to 30
+        </p>
       </div>
 
       <div className="flex flex-col gap-2 items-center justify-center my-4">
         <Button
-          className="uppercase px-4 py-2 rounded-none text-center bg-[#40A2E3] text-[#F8F6E3] font-bold"
-          variant="filled"
-          color="blue"
-          onClick={handleGenerate}
-        >
-          Generate Random Array
-        </Button>
-        <Button
-          className="uppercase px-4 py-2 rounded-none text-center bg-[#40A2E3] text-[#F8F6E3] font-bold"
+          className="bg-blue-500 disabled:opacity-55 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 shadow-md hover:shadow-lg transition duration-300"
           variant="filled"
           color="blue"
           onClick={sortArraysHandler}

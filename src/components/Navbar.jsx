@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import SearchingComponent from "./SearchingComponent";
 
 function Navbar() {
   return (
@@ -9,12 +10,15 @@ function Navbar() {
       </div>
       <div>
         <ul className="flex gap-2 ">
-          <NavLink to="/sorting">
-            <li>Sorting</li>
-          </NavLink>
-          <NavLink to="/searching">
-            <li>Searching</li>
-          </NavLink>
+          <li>
+            <NavLink to="/sorting">Sorting </NavLink>
+          </li>
+          <li>
+            <SearchingComponent />
+          </li>
+          <li>
+            <NavLink to="/compare-sorting">Compare </NavLink>
+          </li>
         </ul>
       </div>
     </div>

@@ -12,7 +12,6 @@ function GenerateRandomArray() {
   const [swappedIndices, setSwappedIndices] = useState([]);
   const [sorting, setSorting] = useState(false);
   const [pivotIndex, setPivotIndex] = useState(-1);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sortingOptionSelected, setSortingOptionSelected] = useState("");
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("");
   const [sortingSpeed, setSortingSpeed] = useState(100);
@@ -23,6 +22,7 @@ function GenerateRandomArray() {
     { name: "Selection Sort" },
     { name: "Merge Sort" },
     { name: "Quick Sort" },
+    { name: "Insertion Sort" },
   ];
 
   const sortingSpeedFactor = [
@@ -39,14 +39,16 @@ function GenerateRandomArray() {
   function submitSortingMethodHandler() {
     setSortingOptionSelected(selectedAlgorithm.name);
 
-    if (sortingOptionSelected === "Bubble Sort") {
+    if (selectedAlgorithm.name === "Bubble Sort") {
       handleBubbleSort();
-    } else if (sortingOptionSelected === "Selection Sort") {
+    } else if (selectedAlgorithm.name === "Selection Sort") {
       handleSelectionSort();
-    } else if (sortingOptionSelected === "Quick Sort") {
+    } else if (selectedAlgorithm.name === "Quick Sort") {
       handleQuickSort();
-    } else if (sortingOptionSelected === "Merge Sort") {
+    } else if (selectedAlgorithm.name === "Merge Sort") {
       handleMergeSort();
+    } else if (selectedAlgorithm.name === "Insertion Sort") {
+      handleInsertionSort();
     }
   }
 
@@ -66,6 +68,8 @@ function GenerateRandomArray() {
     setActiveIndex(-1);
     setSortedIndices([]);
     setMinIndex(-1);
+    setSortingSpeed(100);
+    setTimeTaken("");
   }
 
   async function handleBubbleSort() {
@@ -128,7 +132,40 @@ function GenerateRandomArray() {
     setTimeTaken(endTime - startTime);
   }
 
+  async function handleInsertionSort() {
+    const startTime = performance.now();
+    setSorting(true);
+    let newArray = [...randomArray];
+    let len = newArray.length;
+
+    for (let i = 1; i < len; i++) {
+      let key = newArray[i];
+      let j = i - 1;
+      setActiveIndex(i);
+
+      while (j >= 0 && newArray[j] > key) {
+        setActiveIndex(j);
+        await new Promise((resolve) => setTimeout(resolve, sortingSpeed));
+        newArray[j + 1] = newArray[j];
+        j = j - 1;
+        setRandomArray([...newArray]);
+      }
+      newArray[j + 1] = key;
+      setRandomArray([...newArray]);
+      if (i === 1) {
+        setSortedIndices((prevSortedIndices) => [...prevSortedIndices, 0]);
+      }
+      setSortedIndices((prevSortedIndices) => [...prevSortedIndices, i]); // Mark the element as sorted
+    }
+
+    setSorting(false);
+    const endTime = performance.now();
+    setTimeTaken(endTime - startTime);
+  }
+
   async function handleMergeSort() {
+    const startTime = performance.now();
+
     setSorting(true);
     let newArray = [...randomArray];
     await mergeSort(newArray, 0, newArray.length - 1);
@@ -141,6 +178,9 @@ function GenerateRandomArray() {
       return [...prevSortedIndices, ...newIndices];
     });
     setSorting(false);
+
+    const endTime = performance.now();
+    setTimeTaken(endTime - startTime);
   }
 
   async function mergeSort(arr, l, r) {
@@ -221,20 +261,23 @@ function GenerateRandomArray() {
   }
 
   async function handleQuickSort() {
+    const startTime = performance.now();
+
     setSorting(true);
     let newArray = [...randomArray];
     await quickSort(newArray, 0, newArray.length - 1);
     setSorting(false);
     setActiveIndex(-1);
     setPivotIndex(-1);
+    setSortedIndices([]);
     const newIndices = [];
     for (let index = 0; index < newArray.length; index++) {
       newIndices.push(index);
     }
-    // console.log("NewIndices are : ", newIndices);
-    setSortedIndices((prevSortedIndices) => {
-      return [...prevSortedIndices, ...newIndices];
-    });
+    setSortedIndices(newIndices);
+
+    const endTime = performance.now();
+    setTimeTaken(endTime - startTime);
   }
 
   async function quickSort(arr, low, high) {
@@ -243,14 +286,6 @@ function GenerateRandomArray() {
 
       await quickSort(arr, low, pi - 1);
       await quickSort(arr, pi + 1, high);
-      const newIndex = [];
-      for (let index = low; index < high; index++) {
-        newIndex.push(index);
-      }
-      console.log("Newindex in quick sort is : ", newIndex);
-      setSortedIndices((prevSortedIndices) => {
-        return [...prevSortedIndices, newIndex];
-      });
     }
   }
 
@@ -388,8 +423,12 @@ function GenerateRandomArray() {
           className="bg-blue-500 disabled:opacity-55 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 shadow-md hover:shadow-lg transition duration-300"
           disabled={sorting}
         />
+        {timeTaken && (
+          <p className="text-red-600 mt-4 font-bold text-center">
+            Time taken: {timeTaken / 100} s
+          </p>
+        )}
       </div>
-      {timeTaken && <p>Time complexity is : {timecomplexity}</p>}
     </div>
   );
 }

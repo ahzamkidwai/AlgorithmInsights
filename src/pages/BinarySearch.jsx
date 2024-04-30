@@ -1,110 +1,162 @@
+import { InputText } from "primereact/inputtext";
 import React, { useState } from "react";
-import SearchNavbar from "../components/SearchNavbar";
-import { useSelector } from "react-redux";
-import RandomArray from "../components/RandomArray";
+import { Button } from "primereact/button";
 
-function BinarySearch() {
-  const [randomArray, setRandomArray] = useState(generateRandomArray());
-  const [activeIndex, setActiveIndex] = useState([]);
-  const [targetIndex, setTargetIndex] = useState([]);
+const BinarySearch = () => {
+  const [numberOfElements, setNumberOfElements] = useState(10);
+  const [randomArray, setRandomArray] = useState(
+    generateSortedArray(numberOfElements)
+  );
+  const [activeIndexes, setActiveIndexes] = useState([]);
+  const [targetIndexes, setTargetIndexes] = useState([]);
+  const [targetElement, setTargetElement] = useState("");
+  const [searching, setSearching] = useState(false);
+  const [showData, setShowData] = useState(false);
 
-  const searchElement = useSelector((state) => state.searchElement);
-  let ele = Number(searchElement.searchElement);
-
-  function generateRandomArray() {
-    return Array.from({ length: 10 }, () => {
+  function generateRandomArray(length) {
+    return Array.from({ length: length }, () => {
       let value;
       do {
         value = Math.floor(Math.random() * 100);
-      } while (value <= 0);
+      } while (value <= 0); // Keep generating until value is greater than 0
       return value;
     });
   }
 
+  function generateSortedArray(length) {
+    const array = generateRandomArray(length);
+    return array.sort((a, b) => a - b); // Sort the array in ascending order
+  }
+
   function handleGenerate() {
-    const array = generateRandomArray();
-    array.sort((a, b) => a - b);
+    const array = generateRandomArray(numberOfElements).sort((a, b) => a - b); // Sort the array
     setRandomArray(array);
-    setTargetIndex([]);
+    setActiveIndexes([]);
+    setShowData(false);
   }
 
   async function binarySearchHandler() {
-    setTargetIndex([]);
+    if (!targetElement) {
+      alert("Enter search Element");
+      return;
+    }
+    setTargetIndexes([]);
 
-    let newArray = [...randomArray];
+    let newArray = [...randomArray].sort((a, b) => a - b);
     let low = 0,
       high = newArray.length - 1;
-    console.log("Newarray : ", newArray);
+    const target = parseInt(targetElement);
+
     while (low <= high) {
-      setActiveIndex([low, high]);
-      console.log("LOW AND HIGH are : ", low, " ", high);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Delay to visualize sorting
-      let mid = Math.floor((low + high) / 2);
-      console.log("Ele and arr[mid] are : ", ele, "  ", newArray[mid]);
-      if (ele === newArray[mid]) {
-        console.log("MATCH FOUND");
-        let arr = [];
-        arr.push(mid);
-        setTargetIndex(arr);
-        console.log("target Index at last after match found : ", targetIndex);
-        break;
-      } else if (ele > newArray[mid]) {
-        console.log("else if (ele > newArray[mid]) chal raha hain");
+      const mid = Math.floor((low + high) / 2);
+      setActiveIndexes([low, high, mid]);
+      await new Promise((resolve) => setTimeout(resolve, 500)); // Delay to visualize sorting
+
+      if (newArray[mid] === target) {
+        setTargetIndexes([mid]);
+        setShowData(true);
+        return;
+      } else if (newArray[mid] < target) {
         low = mid + 1;
       } else {
-        console.log("else wla part chal raha hain");
         high = mid - 1;
       }
     }
 
-    /* for (let index = 0; index < randomArray.length; index++) {
-      setActiveIndex(index);
-      await new Promise((resolve) => setTimeout(resolve, 300)); // Delay to visualize sorting
-      if (randomArray[index] === ele) {
-        setTargetIndex((prevTarget) => [...prevTarget, index]); // Correct way to update targetIndex
-      }
-    } */
-
-    setActiveIndex([]);
+    setShowData(true);
+    setActiveIndexes([]);
   }
 
   return (
-    <div>
-      <SearchNavbar />
-      Welcome to Binary Search
-      <div className="flex items-end ">
+    <div className="bg-[#F8F6E3] h-screen">
+      <h1 className="text-center text-[#40A2E3] text-2xl font-bold pt-8">
+        BINARY SEARCH
+      </h1>
+      <div className="flex flex-row items-end justify-center min-h-60 rounded-lg px-4 shadow-lg">
         {randomArray.map((value, index) => (
           <div key={index} className="flex flex-col">
             <div
               className={`h-auto ${
-                targetIndex.includes(index)
-                  ? "bg-pink-900"
-                  : activeIndex.includes(index)
-                  ? "bg-yellow-500"
-                  : "bg-blue-500"
-              } text-white flex items-end justify-center rounded`}
-              style={{ height: `${value}px`, width: "30px", margin: "0 3px" }}
+                targetIndexes.includes(index)
+                  ? "bg-purple-900"
+                  : activeIndexes.includes(index)
+                  ? "bg-[#ffae45]"
+                  : "bg-[#40A2E3]"
+              } text-white flex items-end justify-center rounded shadow-md transform transition-transform`}
+              style={{
+                height: `${value / 10}rem`,
+                width: "2rem",
+                margin: "0 0.2rem",
+                minWidth: "2rem",
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+              }}
             ></div>
-            <p className="mx-2">{value}</p>
+            <p className="mx-2 font-bold text-[#40A2E3]">{value}</p>
+            <br />
           </div>
         ))}
       </div>
-      <div>
-        <button
-          onClick={handleGenerate}
-          className="bg-red-500 px-4 py-1 text-white mx-2"
-        >
-          Generate Random
-        </button>
-        <button
-          onClick={binarySearchHandler}
-          className="bg-pink-500 px-4 py-1 text-white mx-2"
-        >
-          Find
-        </button>
+      <div className="flex flex-col justify-center">
+        <div>
+          <div className="flex flex-row items-center gap-3 text-[#40A2E3] font-bold text-lg justify-center pt-8">
+            Size of an Array
+            <InputText
+              value={numberOfElements}
+              onChange={(e) => {
+                const value = parseInt(e.target.value);
+                setNumberOfElements(value);
+              }}
+              placeholder="Enter Length of Array"
+              className="rounded-md text-black font-thin"
+            />
+            <button
+              onClick={handleGenerate}
+              className="py-1 px-4 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none shadow-md hover:shadow-lg transition duration-300 text-base"
+            >
+              Generate
+            </button>
+          </div>
+          <p className="text-red-600 font-medium text-center">
+            Note : The value of size varies from 1 to 30
+          </p>
+          <br />
+        </div>
+        <div className="flex flex-row gap-3 justify-center">
+          <p className="text-[#40A2E3] font-bold text-lg  text-center">
+            Enter value to be searched for :{" "}
+          </p>
+          <input
+            type="number"
+            placeholder="Enter element..."
+            className="rounded-md px-2"
+            onChange={(e) => {
+              setTargetElement(e.target.value);
+            }}
+          />
+        </div>
+        <br />
+        <div className="text-center">
+          <Button
+            label="Submit"
+            onClick={binarySearchHandler}
+            className="bg-blue-500 disabled:opacity-55 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 shadow-md hover:shadow-lg transition duration-300"
+          />
+        </div>
       </div>
+
+      {showData && targetIndexes.length > 0 && (
+        <p className="text-center text-[#40A2E3] font-bold text-lg">
+          Target element is found at index {targetIndexes[0]}
+        </p>
+      )}
+      {showData && targetIndexes.length === 0 && (
+        <p className="text-center text-[#40A2E3] font-bold text-lg">
+          Target element is not found.
+        </p>
+      )}
+      <br />
     </div>
   );
-}
+};
 
 export default BinarySearch;
