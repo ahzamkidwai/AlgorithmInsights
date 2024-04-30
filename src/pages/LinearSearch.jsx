@@ -57,7 +57,7 @@ const LinearSearch = () => {
       <h1 className="text-center text-[#40A2E3] text-2xl font-bold pt-8">
         LINEAR SEARCH
       </h1>
-      <div className="flex flex-row items-end justify-center min-h-60 rounded-lg px-4 shadow-lg">
+      <div className="flex flex-row items-end justify-center min-h-60 rounded-lg px-4 ">
         {randomArray.map((value, index) => (
           <div key={index} className="flex flex-col">
             <div

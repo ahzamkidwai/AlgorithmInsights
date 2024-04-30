@@ -39,8 +39,6 @@ function CompareSorting() {
 
   const sortingSpeed = 200;
 
-  
-
   const sortingAlgorithmsOptions = [
     { name: "Selection Sort" },
     { name: "Bubble Sort" },
