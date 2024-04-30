@@ -34,7 +34,12 @@ function CompareSorting() {
     secondSortingOption: "",
   });
 
+  const [timeTaken1, setTimeTaken1] = useState();
+  const [timeTaken2, setTimeTaken2] = useState();
+
   const sortingSpeed = 200;
+
+  
 
   const sortingAlgorithmsOptions = [
     { name: "Selection Sort" },
@@ -101,8 +106,8 @@ function CompareSorting() {
   function handleGenerate() {
     const array = generateRandomArray();
     setCommonArray(array);
-    setArray1(array);
-    setArray2(array);
+    setArray1([...array]);
+    setArray2([...array]);
     setSortingOptions({
       firstSortingOption: "",
       secondSortingOption: "",
@@ -123,6 +128,9 @@ function CompareSorting() {
 
     setMinIndex1(-1);
     setMinIndex2(-1);
+
+    setTimeTaken1();
+    setTimeTaken2();
   }
 
   async function handleBubbleSort(newArray, order) {
@@ -173,6 +181,9 @@ function CompareSorting() {
     const endTime = performance.now();
     const timeTaken = endTime - startTime;
     console.log("Time taken is (using Bubble Sort) : ", timeTaken);
+
+    if (order === 1) setTimeTaken1(timeTaken);
+    else if (order === 2) setTimeTaken2(timeTaken);
   }
 
   async function handleSelectionSort(newArray, order) {
@@ -229,6 +240,9 @@ function CompareSorting() {
     const endTime = performance.now();
     const timeTaken = endTime - startTime;
     console.log("Time taken is (using Bubble Sort) : ", timeTaken);
+
+    if (order === 1) setTimeTaken1(timeTaken);
+    else if (order === 2) setTimeTaken2(timeTaken);
   }
 
   async function handleInsertionSort(newArray, order) {
@@ -290,6 +304,9 @@ function CompareSorting() {
     const endTime = performance.now();
     const timeTaken = endTime - startTime;
     console.log("Time taken is (using Insertion Sort): ", timeTaken);
+
+    if (order === 1) setTimeTaken1(timeTaken);
+    else if (order === 2) setTimeTaken2(timeTaken);
   }
 
   async function handleQuickSort(newArray, order) {
@@ -317,6 +334,9 @@ function CompareSorting() {
     const endTime = performance.now();
     const timeTaken = endTime - startTime;
     console.log("Time taken is (using Quick Sort) : ", timeTaken);
+
+    if (order === 1) setTimeTaken1(timeTaken);
+    else if (order === 2) setTimeTaken2(timeTaken);
   }
 
   async function quickSort(arr, low, high, order) {
@@ -396,11 +416,14 @@ function CompareSorting() {
     const timeTaken = endTime - startTime;
     console.log("Time taken is (using Merge Sort) : ", timeTaken);
 
-    console.log("Array is (inside MergeSort After Sorting) : ", newArray);
+    /* console.log("Array is (inside MergeSort After Sorting) : ", newArray);
     console.log(
       "Array size is  (inside MergeSort After Sorting) : ",
       newArray.length
-    );
+    ); */
+
+    if (order === 1) setTimeTaken1(timeTaken);
+    else if (order === 2) setTimeTaken2(timeTaken);
   }
 
   async function mergeSort(arr, l, r, order) {
@@ -501,7 +524,7 @@ function CompareSorting() {
 
   return (
     <div className="bg-[#F7EBE8]">
-      <div className=" min-h-96 pt-12 border border-green-700  flex flex-row items-center justify-evenly sm:min-h-60">
+      <div className=" min-h-96 pt-12 pb-8 flex flex-row items-center justify-evenly sm:min-h-60">
         <div className="flex flex-col gap-8">
           <div className="flex items-end min-h-60 rounded-xl px-2 bg-[#F8F6E3] shadow-2xl overflow-x-auto">
             {array1.map((value, index) => (
@@ -565,7 +588,7 @@ function CompareSorting() {
         </div>
       </div>
 
-      <div className=" flex flex-row items-start justify-evenly">
+      <div className="  flex flex-row items-start justify-evenly">
         {/* For array1 */}
 
         <Dropdown
@@ -581,7 +604,7 @@ function CompareSorting() {
           options={sortingAlgorithmsOptions}
           optionLabel="name"
           placeholder="Select first sorting option"
-          className="w-full md:w-64 border rounded p-2 focus:outline-none text-white bg-[#9AC8CD] shadow-md"
+          className="w-full md:w-64 border rounded p-2 focus:outline-none text-white  bg-[#9AC8CD] shadow-md"
           panelClassName="bg-white  border rounded shadow-md text-red-800 shadow-2xl"
           dropdownIcon="pi pi-chevron-down"
         />
@@ -638,15 +661,33 @@ function CompareSorting() {
         </p>
       </div>
 
-      <div className="flex flex-col gap-2 items-center justify-center my-4">
+      <div className="flex flex-col pb-8 gap-2 items-center justify-center my-4">
         <Button
-          className="bg-blue-500 disabled:opacity-55 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 shadow-md hover:shadow-lg transition duration-300"
+          className="bg-[#40A2E3] disabled:opacity-55 hover:bg-[#2d6d98] text-white font-bold py-2 px-4 rounded mt-4 shadow-md hover:shadow-lg transition duration-300"
           variant="filled"
           color="blue"
           onClick={sortArraysHandler}
         >
           Sort Arrays
         </Button>
+        <div className="flex flex-row justify-evenly gap-8">
+          {timeTaken1 && (
+            <p className="font-bold">
+              Time Complexity for array I :
+              <span className="text-[#40A2E3]">
+                {timeTaken1 / 1000} seconds
+              </span>
+            </p>
+          )}
+          {timeTaken2 && (
+            <p className="font-bold">
+              Time Complexity for array II :
+              <span className="text-[#40A2E3]">
+                {timeTaken2 / 1000} seconds
+              </span>
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
