@@ -155,7 +155,10 @@ function GenerateRandomArray() {
     let newArray = [...randomArray];
     let len = newArray.length;
 
+    const passes = [];
+
     for (let i = 1; i < len; i++) {
+      const passArray = [...newArray];
       let key = newArray[i];
       let j = i - 1;
       setActiveIndex(i);
@@ -165,16 +168,21 @@ function GenerateRandomArray() {
         await new Promise((resolve) => setTimeout(resolve, sortingSpeed));
         newArray[j + 1] = newArray[j];
         j = j - 1;
+        passArray[j + 1] = newArray[j + 1]; // Update the passArray
         setRandomArray([...newArray]);
       }
       newArray[j + 1] = key;
+      passArray[j + 1] = key; // Update the passArray
       setRandomArray([...newArray]);
+      passes.push(passArray); // Pushing passArray into passes
       if (i === 1) {
         setSortedIndices((prevSortedIndices) => [...prevSortedIndices, 0]);
       }
       setSortedIndices((prevSortedIndices) => [...prevSortedIndices, i]); // Mark the element as sorted
     }
 
+    passes.push([...newArray]); // Pushing the final sorted array into passes
+    setArrayPasses(passes); // Setting the array passes
     setSorting(false);
     const endTime = performance.now();
     setTimeTaken(endTime - startTime);
