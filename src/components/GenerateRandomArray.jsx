@@ -16,6 +16,7 @@ function GenerateRandomArray() {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("");
   const [sortingSpeed, setSortingSpeed] = useState(100);
   const [timeTaken, setTimeTaken] = useState("");
+  const [arrayPasses, setArrayPasses] = useState([]);
 
   const sortingAlgorithms = [
     { name: "Bubble Sort" },
@@ -70,6 +71,7 @@ function GenerateRandomArray() {
     setMinIndex(-1);
     setSortingSpeed(100);
     setTimeTaken("");
+    setArrayPasses([]);
   }
 
   async function handleBubbleSort() {
@@ -79,8 +81,12 @@ function GenerateRandomArray() {
     let newArray = [...randomArray]; // Create a copy of the array
     let len = newArray.length;
 
+    const passes = [];
+
     // Bubble sort algorithm
     for (let i = 0; i < len; i++) {
+      const passArray = [...newArray]; // Creating copy of newArray into passArray
+
       for (let j = 0; j < len - 1 - i; j++) {
         setActiveIndex(j); // Highlight current element being compared
         await new Promise((resolve) => setTimeout(resolve, sortingSpeed)); // Delay to visualize sorting
@@ -91,12 +97,17 @@ function GenerateRandomArray() {
           newArray[j + 1] = temp;
           setRandomArray([...newArray]); // Update the array after swapping
         }
+        console.log("J ki value hain bubble sort mei : ", j);
+        passArray[j] = newArray[j];
       }
+      passes.push(passArray);
       setSortedIndices((prevSortedIndices) => [
         ...prevSortedIndices,
         len - 1 - i,
       ]); // Mark the element as sorted
     }
+
+    setArrayPasses(passes);
 
     setActiveIndex(-1); // Reset active index
     setSorting(false);
@@ -111,7 +122,10 @@ function GenerateRandomArray() {
     let newArray = [...randomArray];
     let len = newArray.length;
 
+    const passes = [];
+
     for (let i = 0; i < len - 1; i++) {
+      const passArray = [...newArray];
       let minIndex = i;
       setActiveIndex(i);
       for (let j = i + 1; j < len; j++) {
@@ -120,13 +134,16 @@ function GenerateRandomArray() {
         if (newArray[j] < newArray[minIndex]) {
           minIndex = j;
         }
-        setMinIndex(minIndex);
+        passArray[j] = newArray[j];
       }
       [newArray[i], newArray[minIndex]] = [newArray[minIndex], newArray[i]];
+      passes.push(passArray); // Pushing passArray into passes
       setRandomArray([...newArray]);
       setSortedIndices((prevSortedIndices) => [...prevSortedIndices, i]); // Mark the element as sorted
     }
     setSortedIndices((prevSortedIndices) => [...prevSortedIndices, len - 1]); // Mark the element as sorted
+    passes.push([...newArray]); // Pushing the final sorted array into passes
+    setArrayPasses(passes); // Setting the array passes
     setSorting(false);
     const endTime = performance.now();
     setTimeTaken(endTime - startTime);
@@ -425,10 +442,30 @@ function GenerateRandomArray() {
         />
         {timeTaken && (
           <p className="text-red-600 mt-4 font-bold text-center">
-            Time taken: {timeTaken / 100} s
+            Time taken: {timeTaken / 1000} s
           </p>
         )}
       </div>
+      {arrayPasses.map((passArray, passIndex) => (
+        <div
+          key={passIndex}
+          className="flex flex-row justify-evenly items-center"
+        >
+          <p className="font-bold text-lg mt-4">
+            Bubble Sort Pass {passIndex + 1}
+          </p>
+          <div className="flex justify-center">
+            {passArray.map((value, index) => (
+              <div
+                key={index}
+                className="mx-2 bg-[#40A2E3] text-white font-bold py-2 px-4 rounded"
+              >
+                {value}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
