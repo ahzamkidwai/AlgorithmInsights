@@ -51,7 +51,7 @@ function CompareSorting() {
     setSortingOptions((prevState) => ({
       ...prevState,
       [option]: value,
-    }));
+    }));  
   }
 
   function sortArraysHandler() {

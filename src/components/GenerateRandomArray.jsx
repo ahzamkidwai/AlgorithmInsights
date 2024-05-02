@@ -97,9 +97,9 @@ function GenerateRandomArray() {
           newArray[j + 1] = temp;
           setRandomArray([...newArray]); // Update the array after swapping
         }
-        console.log("J ki value hain bubble sort mei : ", j);
-        passArray[j] = newArray[j];
+        // passArray[j] = newArray[j];
       }
+      console.log("random array after iteration " + i + " is : " + randomArray);
       passes.push(passArray);
       setSortedIndices((prevSortedIndices) => [
         ...prevSortedIndices,
@@ -107,7 +107,7 @@ function GenerateRandomArray() {
       ]); // Mark the element as sorted
     }
 
-    setArrayPasses(passes);
+    setArrayPasses([...passes]);
 
     setActiveIndex(-1); // Reset active index
     setSorting(false);
@@ -134,7 +134,7 @@ function GenerateRandomArray() {
         if (newArray[j] < newArray[minIndex]) {
           minIndex = j;
         }
-        passArray[j] = newArray[j];
+        // passArray[j] = newArray[j];
       }
       [newArray[i], newArray[minIndex]] = [newArray[minIndex], newArray[i]];
       passes.push(passArray); // Pushing passArray into passes
@@ -143,7 +143,7 @@ function GenerateRandomArray() {
     }
     setSortedIndices((prevSortedIndices) => [...prevSortedIndices, len - 1]); // Mark the element as sorted
     passes.push([...newArray]); // Pushing the final sorted array into passes
-    setArrayPasses(passes); // Setting the array passes
+    setArrayPasses([...passes]); // Setting the array passes
     setSorting(false);
     const endTime = performance.now();
     setTimeTaken(endTime - startTime);
@@ -158,7 +158,7 @@ function GenerateRandomArray() {
     const passes = [];
 
     for (let i = 1; i < len; i++) {
-      const passArray = [...newArray];
+      let passArray = [...newArray];
       let key = newArray[i];
       let j = i - 1;
       setActiveIndex(i);
@@ -168,11 +168,12 @@ function GenerateRandomArray() {
         await new Promise((resolve) => setTimeout(resolve, sortingSpeed));
         newArray[j + 1] = newArray[j];
         j = j - 1;
-        passArray[j + 1] = newArray[j + 1]; // Update the passArray
+        // passArray[j + 1] = newArray[j + 1]; // Update the passArray
         setRandomArray([...newArray]);
       }
       newArray[j + 1] = key;
-      passArray[j + 1] = key; // Update the passArray
+      // passArray[j + 1] = key; // Update the passArray
+      passArray = [...newArray];
       setRandomArray([...newArray]);
       passes.push(passArray); // Pushing passArray into passes
       if (i === 1) {
@@ -182,7 +183,7 @@ function GenerateRandomArray() {
     }
 
     passes.push([...newArray]); // Pushing the final sorted array into passes
-    setArrayPasses(passes); // Setting the array passes
+    setArrayPasses([...passes]); // Setting the array passes
     setSorting(false);
     const endTime = performance.now();
     setTimeTaken(endTime - startTime);
