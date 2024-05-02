@@ -9,12 +9,12 @@ function Navbar() {
         <NavLink to="/">Algorithm Insights</NavLink>
       </div>
       <div>
-        <ul className="flex gap-2 ">
+        <ul className="flex gap-4 ">
           <li>
             <NavLink to="/sorting">Sorting </NavLink>
           </li>
           <li>
-          <NavLink to="/search">Search </NavLink>
+          <NavLink to="/search">Searching </NavLink>
           </li>
           <li>
             <NavLink to="/compare-sorting">Compare </NavLink>

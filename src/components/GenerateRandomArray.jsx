@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
+import toast, { Toaster } from "react-hot-toast";
 
 function GenerateRandomArray() {
   const [numberOfElements, setNumberOfElements] = useState(10);
@@ -39,6 +40,10 @@ function GenerateRandomArray() {
 
   function submitSortingMethodHandler() {
     setSortingOptionSelected(selectedAlgorithm.name);
+
+    if (!sortingOptionSelected) {
+      toast.error("Select Sorting Algorithm");
+    }
 
     if (selectedAlgorithm.name === "Bubble Sort") {
       handleBubbleSort();
@@ -342,6 +347,7 @@ function GenerateRandomArray() {
 
   return (
     <div className="bg-cyan-50 h-screen">
+      <Toaster/>
       <h1 className="text-4xl uppercase font-bold text-center pt-6 text-cyan-900 ">
         Sorting
       </h1>

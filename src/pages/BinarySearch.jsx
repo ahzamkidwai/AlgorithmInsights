@@ -34,6 +34,7 @@ const BinarySearch = () => {
     setRandomArray(array);
     setActiveIndexes([]);
     setShowData(false);
+    setTargetElement("");
   }
 
   async function binarySearchHandler() {
@@ -130,6 +131,7 @@ const BinarySearch = () => {
           <input
             type="number"
             placeholder="Enter target element..."
+            value={targetElement}
             className="rounded-md px-2"
             onChange={(e) => {
               setTargetElement(e.target.value);

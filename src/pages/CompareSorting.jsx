@@ -3,8 +3,7 @@ import "react-dropdown/style.css";
 import { Button } from "@material-tailwind/react";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
-
-// import { Dropdown, ButtonToolbar } from "rsuite";
+import toast, { Toaster } from "react-hot-toast";
 
 function CompareSorting() {
   const [numberOfElements, setNumberOfElements] = useState(10);
@@ -54,11 +53,33 @@ function CompareSorting() {
     }));
   }
 
+  function checkForSortedArray(array) {
+    let f = true;
+    for (let i = 0; i < array.length - 1; i++) {
+      if (array[i] >= array[i + 1]) {
+        return false;
+      }
+    }
+    console.log("Array sorted nikla hai bhai");
+    return true;
+  }
+
   function sortArraysHandler() {
     const firstOption = sortingOptions.firstSortingOption;
     const secondOption = sortingOptions.secondSortingOption;
     // console.log("First Sorting Option is : ", firstOption);
     // console.log("Second Sorting Option is : ", secondOption);
+
+    if (!firstOption && !secondOption) {
+      toast.error("Select sorting algorithms");
+      return;
+    } else if (!firstOption && secondOption) {
+      toast.error("Select sorting algorithms for first array");
+      return;
+    } else if (firstOption && !secondOption) {
+      toast.error("Select sorting algorithms for second array");
+      return;
+    }
 
     const sortArray1 = async () => {
       if (firstOption === "Bubble Sort") {
@@ -521,7 +542,8 @@ function CompareSorting() {
   }
 
   return (
-    <div className="bg-cyan-50 h-screen">
+    <div className="bg-cyan-50 h-full">
+      <Toaster />
       <h1 className="text-4xl uppercase font-bold text-center pt-6 text-cyan-900 ">
         Compare Sorting
       </h1>

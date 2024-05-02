@@ -115,6 +115,7 @@ const LinearSearch = () => {
           <input
             type="number"
             placeholder="Enter target element..."
+            value={targetElement}
             className="rounded-md px-2"
             onChange={(e) => {
               setTargetElement(parseInt(e.target.value));
