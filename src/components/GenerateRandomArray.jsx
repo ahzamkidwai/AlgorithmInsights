@@ -341,9 +341,12 @@ function GenerateRandomArray() {
   }
 
   return (
-    <div className="bg-[#F7EBE8]">
-      <div className="flex flex-col items-center justify-center h-2/3 py-20 ">
-        <div className="flex flex-row items-end justify-center min-h-60 bg-[#F8F6E3]  rounded-lg px-4  shadow-lg">
+    <div className="bg-cyan-50">
+      <h1 className="text-4xl uppercase font-bold text-center pt-6 text-cyan-900 ">
+        Sorting
+      </h1>
+      <div className="flex flex-col items-center justify-center h-2/3 py-12 ">
+        <div className="flex flex-row items-end justify-center min-h-60 bg-cyan-100  rounded-lg px-4  shadow-lg">
           {randomArray.map((value, index) => (
             <div key={index} className="flex flex-col">
               <div
@@ -417,7 +420,7 @@ function GenerateRandomArray() {
               options={sortingAlgorithms}
               optionLabel="name"
               placeholder="Select a sorting algorithm"
-              className="w-full md:w-64 border rounded p-2 focus:outline-none text-white bg-[#9AC8CD] shadow-md"
+              className="w-full md:w-64 border rounded p-2 focus:outline-none text-cyan-500 font-medium bg-cyan-100 shadow-md"
               panelClassName="bg-white  border rounded shadow-md text-red-800 shadow-2xl"
               dropdownIcon="pi pi-chevron-down"
             />
@@ -437,7 +440,7 @@ function GenerateRandomArray() {
               options={sortingSpeedFactor}
               optionLabel="speedVal"
               placeholder="Select sorting speed"
-              className="w-full md:w-64 border rounded p-2 focus:outline-none text-white bg-[#9AC8CD] shadow-md"
+              className="w-full md:w-64 border rounded p-2 focus:outline-none text-cyan-500 font-medium bg-cyan-100 shadow-md"
               panelClassName="bg-white border rounded shadow-md text-red-800 shadow-2xl"
               dropdownIcon="pi pi-chevron-down"
             />
