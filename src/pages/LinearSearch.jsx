@@ -1,6 +1,7 @@
 import { InputText } from "primereact/inputtext";
 import React, { useState } from "react";
 import { Button } from "primereact/button";
+import toast, { Toaster } from "react-hot-toast";
 
 const LinearSearch = () => {
   const [numberOfElements, setNumberOfElements] = useState(10);
@@ -34,7 +35,7 @@ const LinearSearch = () => {
   async function linearSearchHandler() {
     setSearching(true);
     if (!targetElement) {
-      alert("Enter search Element");
+      toast.error("ERROR! Enter target element");
       return;
     }
     setTargetIndex([]);
@@ -54,6 +55,7 @@ const LinearSearch = () => {
 
   return (
     <div className="bg-cyan-50 h-screen">
+      <Toaster />
       <h1 className="text-center text-cyan-900 text-2xl font-bold pt-8">
         LINEAR SEARCH
       </h1>
