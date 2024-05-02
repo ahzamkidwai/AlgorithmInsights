@@ -30,7 +30,7 @@ const HomePage = () => {
           label="Explore Searching"
           className="px-4 py-2 bg-blue-500 disabled:opacity-55 hover:bg-blue-700 text-white font-bold rounded  shadow-md hover:shadow-lg transition duration-300"
           onClick={() => {
-            navigate("/linear-search");
+            navigate("/search");
           }}
         />
       </div>
