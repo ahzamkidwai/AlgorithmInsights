@@ -347,7 +347,7 @@ function GenerateRandomArray() {
 
   return (
     <div className="bg-cyan-50 h-screen">
-      <Toaster/>
+      <Toaster />
       <h1 className="text-4xl uppercase font-bold text-center pt-6 text-cyan-900 ">
         Sorting
       </h1>
