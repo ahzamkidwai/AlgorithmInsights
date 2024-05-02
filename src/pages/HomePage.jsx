@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const navigate = useNavigate();
   return (
-    <div className=" flex flex-col font-bold text-cyan-900 bg-cyan-50 items-center border">
+    <div className=" flex flex-col font-bold text-cyan-900 bg-cyan-50 items-center h-screen">
       <h1 className="text-6xl mt-56">
         <p className="text-center">WELCOME TO</p>
         <p>ALGORITHM INSIGHTS</p>

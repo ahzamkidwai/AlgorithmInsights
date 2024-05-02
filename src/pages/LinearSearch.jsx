@@ -53,8 +53,8 @@ const LinearSearch = () => {
   }
 
   return (
-    <div className="bg-[#F8F6E3] h-screen">
-      <h1 className="text-center text-[#40A2E3] text-2xl font-bold pt-8">
+    <div className="bg-cyan-50 h-screen">
+      <h1 className="text-center text-cyan-900 text-2xl font-bold pt-8">
         LINEAR SEARCH
       </h1>
       <div className="flex flex-row items-end justify-center min-h-60 rounded-lg px-4 ">

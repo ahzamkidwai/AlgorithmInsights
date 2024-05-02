@@ -341,7 +341,7 @@ function GenerateRandomArray() {
   }
 
   return (
-    <div className="bg-cyan-50">
+    <div className="bg-cyan-50 h-screen">
       <h1 className="text-4xl uppercase font-bold text-center pt-6 text-cyan-900 ">
         Sorting
       </h1>
@@ -421,7 +421,7 @@ function GenerateRandomArray() {
               optionLabel="name"
               placeholder="Select a sorting algorithm"
               className="w-full md:w-64 border rounded p-2 focus:outline-none text-cyan-500 font-medium bg-cyan-100 shadow-md"
-              panelClassName="bg-white  border rounded shadow-md text-red-800 shadow-2xl"
+              panelClassName="bg-white  border rounded shadow-md text-cyan-800 shadow-2xl"
               dropdownIcon="pi pi-chevron-down"
             />
           </div>
@@ -441,7 +441,7 @@ function GenerateRandomArray() {
               optionLabel="speedVal"
               placeholder="Select sorting speed"
               className="w-full md:w-64 border rounded p-2 focus:outline-none text-cyan-500 font-medium bg-cyan-100 shadow-md"
-              panelClassName="bg-white border rounded shadow-md text-red-800 shadow-2xl"
+              panelClassName="bg-white border rounded shadow-md text-cyan-800 shadow-2xl"
               dropdownIcon="pi pi-chevron-down"
             />
           </div>
@@ -449,7 +449,7 @@ function GenerateRandomArray() {
         <Button
           label="Submit"
           onClick={submitSortingMethodHandler}
-          className="bg-blue-500 disabled:opacity-55 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 shadow-md hover:shadow-lg transition duration-300"
+          className="bg-blue-500 disabled:opacity-55 hover:bg-blue-700 text-white font-bold py-4 px-5 rounded mt-4 shadow-md hover:shadow-lg transition duration-300"
           disabled={sorting}
         />
         {timeTaken && (
@@ -458,26 +458,28 @@ function GenerateRandomArray() {
           </p>
         )}
       </div>
-      {arrayPasses.map((passArray, passIndex) => (
-        <div
-          key={passIndex}
-          className="flex flex-row justify-evenly items-center"
-        >
-          <p className="font-bold text-lg mt-4">
-            {selectedAlgorithm.name} Sort Pass {passIndex + 1}
-          </p>
-          <div className="flex justify-center">
-            {passArray.map((value, index) => (
-              <div
-                key={index}
-                className="mx-1 bg-[#40A2E3] text-white font-bold py-2 px-2 rounded"
-              >
-                {value}
-              </div>
-            ))}
+      <div className="py-8 bg-cyan-50">
+        {arrayPasses.map((passArray, passIndex) => (
+          <div
+            key={passIndex}
+            className="flex flex-row justify-evenly items-center"
+          >
+            <p className="font-bold text-lg mt-4">
+              {selectedAlgorithm.name} Sort Pass {passIndex + 1}
+            </p>
+            <div className="flex justify-center">
+              {passArray.map((value, index) => (
+                <div
+                  key={index}
+                  className="mx-1 bg-[#40A2E3] text-white font-bold py-2 px-2 rounded"
+                >
+                  {value}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

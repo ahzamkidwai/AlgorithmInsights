@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const Search = () => {
   const navigate = useNavigate();
   return (
-    <div className=" flex flex-col  text-cyan-900 bg-cyan-50 items-center border">
+    <div className=" flex flex-col  text-cyan-900 bg-cyan-50 items-center border h-screen">
       <div>
         <h1 className="text-6xl text-center font-bold mt-48">SEARCHING</h1>
         <br />

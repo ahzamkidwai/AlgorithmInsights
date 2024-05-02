@@ -521,7 +521,7 @@ function CompareSorting() {
   }
 
   return (
-    <div className="bg-cyan-50">
+    <div className="bg-cyan-50 h-screen">
       <h1 className="text-4xl uppercase font-bold text-center pt-6 text-cyan-900 ">
         Compare Sorting
       </h1>
@@ -606,7 +606,7 @@ function CompareSorting() {
           optionLabel="name"
           placeholder="Select first sorting option"
           className="w-full md:w-64 border rounded p-2 focus:outline-none text-cyan-500 font-medium bg-cyan-100 shadow-md"
-          panelClassName="bg-white  border rounded shadow-md text-red-800 shadow-2xl"
+          panelClassName="bg-white  border rounded shadow-md text-cyan-800 shadow-2xl"
           dropdownIcon="pi pi-chevron-down"
         />
 
@@ -626,7 +626,7 @@ function CompareSorting() {
           optionLabel="name"
           placeholder="Select second sorting option "
           className="w-full md:w-64 border rounded p-2 focus:outline-none text-cyan-500 font-medium bg-cyan-100 shadow-md"
-          panelClassName="bg-white  border rounded shadow-md text-red-800 shadow-2xl"
+          panelClassName="bg-white  border rounded shadow-md text-cyan-800 shadow-2xl"
           dropdownIcon="pi pi-chevron-down"
         />
       </div>
@@ -674,7 +674,7 @@ function CompareSorting() {
         <div className="flex flex-row justify-evenly gap-8">
           {timeTaken1 && (
             <p className="font-bold">
-              Time Complexity for array I :
+              Time Complexity for {sortingOptions.firstSortingOption} :
               <span className="text-[#40A2E3]">
                 {timeTaken1 / 1000} seconds
               </span>
@@ -682,7 +682,7 @@ function CompareSorting() {
           )}
           {timeTaken2 && (
             <p className="font-bold">
-              Time Complexity for array II :
+              Time Complexity for {sortingOptions.secondSortingOption} :
               <span className="text-[#40A2E3]">
                 {timeTaken2 / 1000} seconds
               </span>

@@ -14,7 +14,7 @@ function Navbar() {
             <NavLink to="/sorting">Sorting </NavLink>
           </li>
           <li>
-            <SearchingComponent />
+          <NavLink to="/search">Search </NavLink>
           </li>
           <li>
             <NavLink to="/compare-sorting">Compare </NavLink>
