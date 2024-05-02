@@ -380,12 +380,12 @@ function GenerateRandomArray() {
               value={numberOfElements}
               onChange={(e) => {
                 const value = parseInt(e.target.value);
-                if (value >= 1 && value <= 30) {
+                if (value >= 1 && value <= 20) {
                   setNumberOfElements(value);
                 } else if (value < 1) {
                   setNumberOfElements(1);
                 } else {
-                  setNumberOfElements(30);
+                  setNumberOfElements(20);
                 }
               }}
               placeholder="Enter Length of Array"
@@ -400,7 +400,7 @@ function GenerateRandomArray() {
             </button>
           </div>
           <p className="text-red-600 font-medium text-center">
-            Note : The value of size varies from 1 to 30
+            Note : The value of size varies from 1 to 20
           </p>
         </div>
 
@@ -461,13 +461,13 @@ function GenerateRandomArray() {
           className="flex flex-row justify-evenly items-center"
         >
           <p className="font-bold text-lg mt-4">
-            Bubble Sort Pass {passIndex + 1}
+            {selectedAlgorithm.name} Sort Pass {passIndex + 1}
           </p>
           <div className="flex justify-center">
             {passArray.map((value, index) => (
               <div
                 key={index}
-                className="mx-2 bg-[#40A2E3] text-white font-bold py-2 px-4 rounded"
+                className="mx-1 bg-[#40A2E3] text-white font-bold py-2 px-2 rounded"
               >
                 {value}
               </div>
