@@ -521,10 +521,13 @@ function CompareSorting() {
   }
 
   return (
-    <div className="bg-[#F7EBE8]">
-      <div className=" min-h-96 pt-12 pb-8 flex flex-row items-center justify-evenly sm:min-h-60">
+    <div className="bg-cyan-50">
+      <h1 className="text-4xl uppercase font-bold text-center pt-6 text-cyan-900 ">
+        Compare Sorting
+      </h1>
+      <div className=" min-h-96 pt-8 pb-6 flex flex-row items-center justify-evenly sm:min-h-60">
         <div className="flex flex-col gap-8">
-          <div className="flex items-end min-h-60 rounded-xl px-2 bg-[#F8F6E3] shadow-2xl overflow-x-auto">
+          <div className="flex items-end min-h-60 rounded-xl px-2 bg-cyan-100 shadow-2xl overflow-x-auto">
             {array1.map((value, index) => (
               <div key={index} className="flex flex-col items-center">
                 <div
@@ -554,7 +557,7 @@ function CompareSorting() {
             ))}
           </div>
 
-          <div className="flex items-end min-h-48 rounded-xl px-2 bg-[#F8F6E3] shadow-2xl overflow-x-auto">
+          <div className="flex items-end min-h-48 rounded-xl px-2 bg-cyan-100 shadow-2xl overflow-x-auto">
             {array2.map((value, index) => (
               <div key={index} className="flex flex-col items-center">
                 <div
@@ -602,7 +605,7 @@ function CompareSorting() {
           options={sortingAlgorithmsOptions}
           optionLabel="name"
           placeholder="Select first sorting option"
-          className="w-full md:w-64 border rounded p-2 focus:outline-none text-white  bg-[#9AC8CD] shadow-md"
+          className="w-full md:w-64 border rounded p-2 focus:outline-none text-cyan-500 font-medium bg-cyan-100 shadow-md"
           panelClassName="bg-white  border rounded shadow-md text-red-800 shadow-2xl"
           dropdownIcon="pi pi-chevron-down"
         />
@@ -622,7 +625,7 @@ function CompareSorting() {
           options={sortingAlgorithmsOptions}
           optionLabel="name"
           placeholder="Select second sorting option "
-          className="w-full md:w-64 border rounded p-2 focus:outline-none text-white bg-[#9AC8CD] shadow-md"
+          className="w-full md:w-64 border rounded p-2 focus:outline-none text-cyan-500 font-medium bg-cyan-100 shadow-md"
           panelClassName="bg-white  border rounded shadow-md text-red-800 shadow-2xl"
           dropdownIcon="pi pi-chevron-down"
         />
