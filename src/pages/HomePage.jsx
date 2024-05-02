@@ -11,6 +11,15 @@ const HomePage = () => {
         <p className="text-center">WELCOME TO</p>
         <p>ALGORITHM INSIGHTS</p>
       </h1>
+      <br />
+      <p>
+      <p className="mx-52">
+        Algorithm Insights is your go-to destination for visualizing sorting and
+        searching algorithms. Whether you're a student, educator, or enthusiast,
+        our platform offers a comprehensive understanding of various sorting and
+        searching techniques through interactive visualizations.
+      </p>
+      </p>
       <div className="flex flex-row  gap-4 py-12 mb-44">
         <Button
           label="Explore Sorting"
