@@ -1,6 +1,7 @@
 import { InputText } from "primereact/inputtext";
 import React, { useState } from "react";
 import { Button } from "primereact/button";
+import toast, { Toaster } from "react-hot-toast";
 
 const BinarySearch = () => {
   const [numberOfElements, setNumberOfElements] = useState(10);
@@ -37,7 +38,7 @@ const BinarySearch = () => {
 
   async function binarySearchHandler() {
     if (!targetElement) {
-      alert("Enter search Element");
+      toast.error("ERROR! Enter target element");
       return;
     }
     setTargetIndexes([]);
@@ -69,6 +70,7 @@ const BinarySearch = () => {
 
   return (
     <div className="bg-cyan-50 h-screen">
+      <Toaster />
       <h1 className="text-center text-cyan-900 text-2xl font-bold pt-8">
         BINARY SEARCH
       </h1>
@@ -127,7 +129,7 @@ const BinarySearch = () => {
           </p>
           <input
             type="number"
-            placeholder="Enter element..."
+            placeholder="Enter target element..."
             className="rounded-md px-2"
             onChange={(e) => {
               setTargetElement(e.target.value);
