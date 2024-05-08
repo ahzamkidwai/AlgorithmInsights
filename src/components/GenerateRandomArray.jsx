@@ -348,7 +348,7 @@ function GenerateRandomArray() {
   return (
     <div className="bg-cyan-50 h-screen">
       <Toaster />
-      <h1 className="text-4xl uppercase font-bold text-center pt-6 text-cyan-900 ">
+      <h1 className="text-4xl py-6 uppercase font-bold text-center pt-6 text-cyan-900 ">
         Sorting
       </h1>
       <div className="flex flex-col items-center justify-center h-2/3 py-12 ">
@@ -464,6 +464,7 @@ function GenerateRandomArray() {
           </p>
         )}
       </div>
+      <br />  <br />
       <div className="py-8 bg-cyan-50">
         {arrayPasses.map((passArray, passIndex) => (
           <div
